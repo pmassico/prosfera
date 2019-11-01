@@ -3,9 +3,9 @@ package com.example.prosfera;
 public class BasketItem {
     private int    basketID,
                    itemID,
-                   quantity;
-    private double price,
-                   priceTotal;
+                   quantity;    //quantity of item in basket
+    private double price,       //price per unit of item in basket
+                   priceTotal;  //total price of item x quantity in basket
 
     /*
         Constructor class.
