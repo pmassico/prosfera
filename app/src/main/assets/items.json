@@ -1,44 +1,53 @@
-[
-  {
-    "name": "Polar Fleece Blanket",
-    "description" : "Stay warm and cozy all year long with this extra warm fleece blanket. The 2-sided brushed, 100% polyester, polar fleece fabric and 1-inch hem having double needle stitching to make it highly durable and perfect for snuggling. No shrinkage after washing and drying ensures that it stays the same even after multiple wash cycles. Twin size measuring 66 by 90 inches and grey color.",
-    "price" : "7.00",
-    "image" : "PolarFleeceBlanket.jpg"
-  },
-  {
-    "name": "Disposable Hand Warmer Heating Pads",
-    "description" : "10 individual large size warmer pads, durable to keep long-lasting heat. Provides protection from frostbite in chilly winter and cold nights. Eco-friendly iron ingredients with soft non-woven fabric, air activated. No leaking, no odor.",
-    "price" : "8.00",
-    "image" : "BodyWarmers.jpg"
-  },
-  {
-    "name": "Portable First Aid Kit",
-    "description" : "This First-Aid-Kit with premium medical supplies is an essential for emergency and survival situations. High-quality EVA & Nylon material with full open zipper, waterproof and shock resistant. 112pcs medical supplies and survival tools such as: tweezers, scissors, an emergency blanket, safety pins, and a variety of other medical items such as pads and bandages.",
-    "price" : "8.00",
-    "image" : "FirstAidKit.jpg"
-  },
-  {
-    "name": "Women's Toiletry Kit",
-    "description" : "Grooming and oral care essentials for women. Includes shampoo, conditioner, body wash, deodorant, toothpaste, toothbrush with toothbrush cover, styling comb, and quart size zip top bag.",
-    "price" : "6.00",
-    "image" : "WomensToiletryKit.jpg"
-  },
-  {
-    "name": "Men's Toiletry Kit",
-    "description" : "Grooming and oral care essentials for men. Includes shaving cream, razor, deodorant, toothpaste, toothbrush with toothbrush cover, mouthwash, styling comb, and quart size zip top bag.",
-    "price" : "6.00",
-    "image" : "MensToiletryKit.jpg"
-  },
-  {
-    "name": "Coiled 1-Subject Notebook",
-    "description" : "1 subject notebook with durable card stock cover. 200 pages of ruled paper with a premium wire coil and 3-hole punch.",
-    "price" : "2.00",
-    "image" : "Notebook.jpg"
-  },
-  {
-    "name": "Pencil Case with supplies",
-    "description" : "A pencil case filled with essential school supplies for kids. Includes: 4 pencils, 2 blue pens, 2 black pens, 3 highlighter pens, 1 ruler, 1 eraser, 1 pair of scissors, and 1 sharpener. Made to last, and comes in a variety of colors and patters.",
-    "price" : "4.00",
-    "image" : "PencilCase.jpg"
-  }
-]
+{
+  "items": [
+    {
+      "name" : "Polar Fleece Blanket",
+      "description" : "Stay warm and cozy all year long with this extra warm fleece blanket. The 2-sided brushed, 100% polyester, polar fleece fabric and 1-inch hem having double needle stitching to make it highly durable and perfect for snuggling. No shrinkage after washing and drying ensures that it stays the same even after multiple wash cycles. Twin size measuring 66 by 90 inches and grey color.",
+      "price" : 7,
+      "image" : "PolarFleeceBlanket.jpg",
+      "threshold" : 15
+    },
+    {
+      "name" : "Disposable Hand Warmer Heating Pads",
+      "description" : "10 individual large size warmer pads, durable to keep long-lasting heat. Provides protection from frostbite in chilly winter and cold nights. Eco-friendly iron ingredients with soft non-woven fabric, air activated. No leaking, no odor.",
+      "price" : 6,
+      "image" : "BodyWarmers.jpg",
+      "threshold" : 25
+    },
+    {
+      "name" : "Portable First Aid Kit",
+      "description" : "This First-Aid-Kit with premium medical supplies is an essential for emergency and survival situations. High-quality EVA & Nylon material with full open zipper, waterproof and shock resistant. 112pcs medical supplies and survival tools such as: tweezers, scissors, an emergency blanket, safety pins, and a variety of other medical items such as pads and bandages.",
+      "price" : 8,
+      "image" : "FirstAidKit.jpg",
+      "threshold" : 30
+    },
+    {
+      "name" : "Women's Toiletry Kit",
+      "description" : "Grooming and oral care essentials for women. Includes shampoo, conditioner, body wash, deodorant, toothpaste, toothbrush with toothbrush cover, styling comb, and quart size zip top bag.",
+      "price" : 6,
+      "image" : "WomensToiletryKit.jpg",
+      "threshold" : 20
+    },
+    {
+      "name" : "Men's Toiletry Kit",
+      "description" : "Grooming and oral care essentials for men. Includes shaving cream, razor, deodorant, toothpaste, toothbrush with toothbrush cover, mouthwash, styling comb, and quart size zip top bag.",
+      "price" : 6,
+      "image" : "MensToiletryKit.jpg",
+      "threshold" : 20
+    },
+    {
+      "name" : "Coiled 1-Subject Notebook",
+      "description" : "1 subject notebook with durable card stock cover. 200 pages of ruled paper with a premium wire coil and 3-hole punch.",
+      "price" : 2,
+      "image" : "Notebook.jpg",
+      "threshold" : 35
+    },
+    {
+      "name" : "Pencil Case with supplies",
+      "description" : "A pencil case filled with essential school supplies for kids. Includes: 4 pencils, 2 blue pens, 2 black pens, 3 highlighter pens, 1 ruler, 1 eraser, 1 pair of scissors, and 1 sharpener. Made to last, and comes in a variety of colors and patters.",
+      "price" : 4,
+      "image" : "PencilCase.jpg",
+      "threshold" : 35
+    }
+  ]
+}

@@ -4,9 +4,9 @@ public class Item {
 
     private int itemID, currentQty, price, threshold, calculatedPerc;
     private String name, description;
-    //private String picture; //not sure how an image will be stored
+    private String imageFile; //not sure how an image will be stored
     //visible (flag)
-    //featured/promte (flag)
+    //featured/promoted (flag)
 
     public Item(int itID, int currQty, String nm, String desc, int prce,
                 int thresh) {
@@ -16,6 +16,20 @@ public class Item {
         this.description = desc;
         this.price       = prce;
         this.threshold   = thresh;
+        this.imageFile   = null;
+        updatePercentage(); //constructor doesn't really need to update the percentage
+    }
+
+    //Overloading constructor to include image parameter (temporarily?)
+    public Item(int itID, int currQty, String nm, String desc, int prce,
+                int thresh, String image) {
+        this.itemID      = itID;
+        this.currentQty  = currQty;
+        this.name        = nm;
+        this.description = desc;
+        this.price       = prce;
+        this.threshold   = thresh;
+        this.imageFile   = image;
         updatePercentage(); //constructor doesn't really need to update the percentage
     }
 
@@ -53,6 +67,7 @@ public class Item {
     {
         return calculatedPerc;
     }
+
 
     public void setItemID(int iID)
     {
