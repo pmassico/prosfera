@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<Item> items = initItemList(); //Initializing a list of items from items.json
 
-        // I am leaving this for now, I don't want to delete Phil's stuff - Christine
+        // I am leaving this for now. Unsure of how to integrate with initItemList() - Christine
         ItemList il = new ItemList();
 
         FragmentManager fm = getSupportFragmentManager();
