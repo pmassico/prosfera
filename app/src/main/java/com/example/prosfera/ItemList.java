@@ -9,11 +9,10 @@ public class ItemList {
     private static final List<Item> ITEMS = new ArrayList<>();
 
     // Constructor
-    public ItemList() {
-        // Add some sample items.
-        for (int i = 0; i < 3; i++) {
-            ITEMS.add(createDummyItem(i, 5, "Item "+i, "Dummy item", i, 10));
-        }
+    public ItemList() { }
+
+    public void addItem(Item item) {
+        ITEMS.add(item);
     }
 
     private static Item createDummyItem(int itID, int currQty, String nm, String desc, int prce,
@@ -27,5 +26,7 @@ public class ItemList {
     }
 
     public int getSize(){ return ITEMS.size(); }
+
+
 }
 

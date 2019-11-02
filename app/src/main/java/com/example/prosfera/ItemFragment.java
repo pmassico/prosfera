@@ -15,7 +15,6 @@ public class ItemFragment extends Fragment {
     private TextView itemName, itemPrice;
     private ProgressBar bar;
     private ImageView pic;
-    private int id;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -33,7 +32,7 @@ public class ItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.wishlist_item, container, false);
 
         // Point to elements in fragment
-        // Need to add ID so that new fragments can reference their own components
+        // TODO: Need to add ID so that new fragments can reference their own components
         itemName = (TextView) view.findViewById(R.id.itemName);
         itemPrice = (TextView) view.findViewById(R.id.itemPrice);
         bar = (ProgressBar) view.findViewById(R.id.progressBar); //progress, max
@@ -41,12 +40,37 @@ public class ItemFragment extends Fragment {
         return view;
     }
 
+    // Not sure if above constructor needs to be empty or not??
     public void fillDetails(Item item) {
         itemName.setText(item.getName());
         itemPrice.setText(item.getPrice());
         bar.setMax(item.getThreshold());
         bar.setProgress(item.getCurrentQty());
-        //pic.setImageResource(R.drawable.);
+        /**
+        setText_itemName(item);
+        setText_itemPrice(item);
+        setMax_bar(item);
+        setProgress_bar(item);**/
+    }
+
+    public String getText_itemName(){
+        return (String)itemName.getText();
+    }
+    // Made setters just in case
+    public void setText_itemName(Item item){
+        itemName.setText(item.getName());
+    }
+
+    public void setText_itemPrice(Item item){
+        itemPrice.setText(item.getPrice());
+    }
+
+    public void setMax_bar(Item item){
+        itemName.setText(item.getName());
+    }
+
+    public void setProgress_bar(Item item){
+        itemName.setText(item.getName());
     }
 
 }
