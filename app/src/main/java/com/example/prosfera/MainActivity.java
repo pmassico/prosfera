@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     //vars
     private ItemList mItems = new ItemList();
+    private Item featuredItem;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
@@ -46,19 +47,6 @@ public class MainActivity extends AppCompatActivity {
         initImageBitmaps();
 
         /**
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fragContainer, new ItemFragment(), "fragment1").commit();
-        ItemFragment iF = (ItemFragment) fm.findFragmentByTag("fragment1");
-        **/
-
-        /**
-        ft.add(R.id.fragContainer, new ItemFragment(), "fragment2");
-        iF = (ItemFragment) fm.findFragmentByTag("fragment2");
-        iF.constructor(il.getItem(1));
-         ft.commit();
-
-        /**
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -72,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    // Sets the featured item
+    // TODO: Should featured item be removed from regular wishlist?
+    private void initFeaturedItem(Item item) {
+        this.featuredItem = new Item(item.getItemID(), item.getCurrentQty(), item.getName(),
+                item.getDescription(), item.getPrice(), item.getThreshold());
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

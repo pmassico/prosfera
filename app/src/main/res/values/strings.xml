@@ -7,4 +7,6 @@
     <string name="itemQty">TextView</string>
     <string name="itemPrice">TextView</string>
     <string name="todo" />
+    <string name="featuredTitle_text">TextView</string>
+    <string name="featuredDesc_text">sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text</string>
 </resources>
