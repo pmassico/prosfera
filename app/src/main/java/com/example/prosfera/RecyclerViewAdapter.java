@@ -22,6 +22,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+    // Recycler view class taken from "RecyclerView" tutorial by CodingWithMitch
+    // src: https://www.youtube.com/watch?v=Vyqz_-sJGFk
+
     private static final String TAG = "RecyclerViewAdapter";
     private ItemList mItemList = new ItemList();
     private ArrayList<String> mImageNames = new ArrayList<>();
@@ -74,7 +77,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         CircleImageView image;
         TextView imageName;
         RelativeLayout rl;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

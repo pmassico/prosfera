@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
         mNames.add("Frozen Lake");
 
-
         mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
         mNames.add("White Sands Desert");
 
@@ -150,4 +149,5 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
 
     }
+
 }

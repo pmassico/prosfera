@@ -6,6 +6,7 @@ import java.util.List;
 public class ItemList {
 
     // An array of Items
+    // Should be common among all itemlist instantiations
     private static final List<Item> ITEMS = new ArrayList<>();
 
     // Constructor
@@ -15,18 +16,11 @@ public class ItemList {
         ITEMS.add(item);
     }
 
-    private static Item createDummyItem(int itID, int currQty, String nm, String desc, int prce,
-                                        int thresh){
-
-        return new Item(itID, currQty, nm, desc, prce, thresh);
-    }
-
     public Item getItem(int pos) {
         return ITEMS.get(pos);
     }
 
     public int getSize(){ return ITEMS.size(); }
-
 
 }
 

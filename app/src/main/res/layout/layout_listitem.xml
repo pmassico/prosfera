@@ -2,30 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="85dp"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginBottom="8dp"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        app:cardCornerRadius="8dp">
+        android:layout_marginBottom="12dp"
+        android:foregroundGravity="center_horizontal"
+        app:cardCornerRadius="8dp"
+        app:contentPadding="16dp">
 
         <RelativeLayout
             android:id="@+id/card_innerLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@mipmap/ic_launcher"
-                />
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/image_name"
@@ -67,6 +66,8 @@
                 android:inputType="number"
                 android:singleLine="true"
                 android:text="99"
+                android:textColor="#919191"
+                android:textColorHint="#ADADAD"
                 android:textSize="24sp" />
 
             <TextView
@@ -78,6 +79,8 @@
                 android:layout_toEndOf="@id/itemQty"
                 android:layout_toRightOf="@+id/itemQty"
                 android:text="10"
+                android:textColor="#363636"
+                android:textColorHint="#00000000"
                 android:textSize="24sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
