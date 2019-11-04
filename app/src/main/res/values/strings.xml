@@ -8,5 +8,12 @@
     <string name="itemPrice">TextView</string>
     <string name="todo" />
     <string name="featuredTitle_text">TextView</string>
-    <string name="featuredDesc_text">sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text</string>
+    <string name="featuredDesc_text">sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text sample text</string>
+    <string name="wishlist_Title1">Featured</string>
+    <string name="wishlist_header">Wishlist</string>
+    <string name="basketHeader_text">Basket</string>
+    <string name="checkoutBtn_text">Checkout</string>
+    <string name="backBtn_text">Back</string>
+    <string name="cartTotal">84</string>
+    <string name="totalSubtitle">incl. tax</string>
 </resources>

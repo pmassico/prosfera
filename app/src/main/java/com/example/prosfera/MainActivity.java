@@ -22,6 +22,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -63,8 +64,14 @@ public class MainActivity extends AppCompatActivity {
     // Sets the featured item
     // TODO: Should featured item be removed from regular wishlist?
     private void initFeaturedItem(Item item) {
+
+        // init values
         this.featuredItem = new Item(item.getItemID(), item.getCurrentQty(), item.getName(),
                 item.getDescription(), item.getPrice(), item.getThreshold());
+
+        // add to layout
+        RelativeLayout rl = findViewById(R.id.featuredContainer);
+
     }
 
     @Override
