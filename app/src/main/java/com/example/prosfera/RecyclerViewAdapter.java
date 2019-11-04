@@ -20,10 +20,10 @@ import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+// Recycler view class taken from "RecyclerView" tutorial by CodingWithMitch
+// src: https://www.youtube.com/watch?v=Vyqz_-sJGFk
 
-    // Recycler view class taken from "RecyclerView" tutorial by CodingWithMitch
-    // src: https://www.youtube.com/watch?v=Vyqz_-sJGFk
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
     private ItemList mItemList = new ItemList();
@@ -51,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: called.");
         Glide.with(mContext)
                 .asBitmap()
-                .load(position)
+                .load(mImages.get(position))
                 .into(holder.image);
 
         holder.imageName.setText(mImageNames.get(position));
@@ -68,10 +68,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
     }
 
+    // size of item list = number of items loaded into recyclerview
     @Override
-    public int getItemCount() {
-        return mItemList.getSize();
-    }
+    public int getItemCount() { return mImageNames.size(); }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
