@@ -39,10 +39,7 @@ public class Item {
         return description;
     }
 
-    public String getPrice()
-    {
-        return Integer.toString(price);
-    }
+    public int getPrice() { return price; }
 
     public int getThreshold()
     {
