@@ -7,7 +7,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/wishlistCard"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
@@ -19,8 +19,9 @@
 
         <RelativeLayout
             android:id="@+id/card_innerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"

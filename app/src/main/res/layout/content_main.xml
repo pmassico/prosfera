@@ -25,7 +25,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/FeaturedHeader"
-        android:minHeight="150dp">
+        android:layout_marginBottom="16dp"
+        android:minHeight="150dp"
+        android:onClick="onFeaturedClick">
+
+        <include
+            android:id="@+id/featuredInclude"
+            layout="@layout/layout_featureditem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            />
 
     </RelativeLayout>
 
@@ -34,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/featuredContainer"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:text="@string/wishlist_header"
         android:textColor="#000000"
