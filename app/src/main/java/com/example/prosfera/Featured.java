@@ -12,6 +12,8 @@ public class Featured extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TODO: upon merge, change reference to XML file on this line
         setContentView(R.layout.activity_featured);
 
         Bundle itemData = getIntent().getExtras();
