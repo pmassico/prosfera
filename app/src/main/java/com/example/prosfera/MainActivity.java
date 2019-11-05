@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
          for (int i = 0; i <= il.getSize(); i++) {
 
          }**/
-
-
     }
 
     public int getPixels(int dpToConvert) {
@@ -78,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpToConvert, r.getDisplayMetrics());
 
         return px;
-      
     }
 
     @Override
@@ -110,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
             //List to hold the Item objects
             ArrayList<Item> itemList = new ArrayList<>();
 
-            //Assuming that the default current quantity on startup is 0 (maybe 1?)
-            int default_qty = 0;
+            //Assuming that the default current quantity on startup is 1
+            int default_qty = 1;
 
             JSONObject obj = new JSONObject(loadJSONFromAsset("items.json"));
             JSONArray itemsArray = obj.getJSONArray("items");
@@ -120,14 +117,14 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject item = itemsArray.getJSONObject(i);
                 String name = item.getString("name");
-                String desc = item.getString("desc");
+                String desc = item.getString("description");
                 int price = item.getInt("price");
                 String image = item.getString("image");
                 int threshold = item.getInt("threshold");
 
-                Item itm = new Item(i, default_qty, name, desc, price, threshold, image);
+                Item itm = new Item(i+1, default_qty, name, desc, price, threshold, image);
                 //For testing:
-                System.out.println(itm);
+                //System.out.println(itm);
                 itemList.add(itm);
             }
 
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     //This method can be used to read a JSON string from a file in the assets folder.
     //See https://stackoverflow.com/questions/19945411/android-java-how-can-i-parse-a-local-json-file-from-assets-folder-into-a-listvi/19945484#19945484
     public String loadJSONFromAsset(String assetName){
-        String json = null;
+        String json;
         try {
             InputStream in = getAssets().open(assetName);
             int size = in.available();

@@ -58,9 +58,11 @@ public class Item {
         return Integer.toString(price);
     }
 
-    public int getThreshold()
+    public int getThreshold() { return threshold; }
+
+    public String getImageFile()
     {
-        return threshold;
+        return imageFile;
     }
 
     public int getCalculatedPerc()
@@ -97,6 +99,11 @@ public class Item {
     public void setThreshold(int t)
     {
         threshold = t;
+    }
+
+    public void setImageFile(String res_name)
+    {
+        imageFile = res_name;
     }
 
     public void updatePercentage() { this.calculatedPerc = this.currentQty/this.threshold; }
