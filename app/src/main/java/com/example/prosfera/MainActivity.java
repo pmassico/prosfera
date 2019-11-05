@@ -24,6 +24,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     //vars
+    private ItemList il = new ItemList();
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started.");
 
         //initItemList();
+        initItemList();
+        initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
         /**
@@ -63,29 +67,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
     public void onFeaturedClick(View view){
         Log.d(TAG, "onFeaturedClick: card clicked.");
         Intent i = new Intent(this, Featured.class);
+
+        final TextView applesInput = findViewById(R.id.applesInput);
+
+
+
         startActivity(i);
-    }
+    }**/
 
     // Populates ItemList with items
     private void initItemList() {
         for (int i = 0; i < 3; i++) {
             Item itemToAdd = new Item(i, 5, "Item "+i, "Dummy item", i, 10);
-            //mItems.addItem(itemToAdd);
+            il.addItem(itemToAdd);
         }
     }
 
-    // Sets the featured item all in one method
-    private void initFeaturedItem() {
+    // Populates featured item card with information
+    private void initFeaturedItem(Item item) {
         // Note: Should featured item be removed from regular wishlist?
-        // Can do: to grab these things from ItemList, add an "int" parameter and
-        //         replace "add" statements with item getters
 
-        // grab layout_featureditem views and populate them with information from chosen item
-        // has to happen before screen is compiled (is that a problem?)
+        // initialize views
+        final TextView featuredDescription = findViewById(R.id.featuredDescription);
+        final TextView featuredTitle = findViewById(R.id.featuredTitle);
+        //final ImageView featuredImage = findViewById(R.id.featuredPic);
 
+        // set their contents
+        featuredTitle.setText(item.getName());
+        featuredDescription.setText(item.getDescription());
+        //featuredImage.setImageResource();
+
+        // Should we dispose of the text/image views after we're done using them? Probably?
     }
 
     @Override
