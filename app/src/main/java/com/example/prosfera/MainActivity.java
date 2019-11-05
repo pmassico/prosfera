@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
 
+        // TODO: IMPORTANT! app does not run because itemlist needs to be instantiated
         initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
     // Set which images/data to load
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
+
 
         //TODO: add reference to items
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
