@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
 
-        //initItemList();
-        initItemList();
         initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
@@ -84,14 +82,6 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("itemId", featuredItem.getItemID());
 
         startActivity(i);
-    }
-
-    // Populates ItemList with items
-    private void initItemList() {
-        for (int i = 0; i < 3; i++) {
-            Item itemToAdd = new Item(i, 5, "Item "+i, "Dummy item", i, 10);
-            il.addItem(itemToAdd);
-        }
     }
 
     // Populates featured item card with information
@@ -144,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    // Set which images to load
+    // Set which images/data to load
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
 
