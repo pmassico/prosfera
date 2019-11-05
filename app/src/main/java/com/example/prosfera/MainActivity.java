@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     //vars
     private ItemList il = new ItemList();
+    private Item featuredItem;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
@@ -67,17 +68,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /**
+
     public void onFeaturedClick(View view){
         Log.d(TAG, "onFeaturedClick: card clicked.");
         Intent i = new Intent(this, Featured.class);
 
-        final TextView applesInput = findViewById(R.id.applesInput);
+        // instantiate view from which to grab data
+        //final TextView applesInput = findViewById(R.id.applesInput);
 
+        // convert data to string
+        //String usermessage = applesInput.getText().toString();
 
+        // passes this id of featured item to activity
+        // uses itemlist to grab item based on Id
+        i.putExtra("itemId", featuredItem.getItemID());
 
         startActivity(i);
-    }**/
+    }
 
     // Populates ItemList with items
     private void initItemList() {
@@ -90,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
     // Populates featured item card with information
     private void initFeaturedItem(Item item) {
         // Note: Should featured item be removed from regular wishlist?
+        this.featuredItem = item;
+
 
         // initialize views
         final TextView featuredDescription = findViewById(R.id.featuredDescription);

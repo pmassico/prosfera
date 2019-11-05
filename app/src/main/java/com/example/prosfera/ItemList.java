@@ -16,9 +16,7 @@ public class ItemList {
         ITEMS.add(item);
     }
 
-    public Item getItem(int pos) {
-        return ITEMS.get(pos);
-    }
+    public Item getItem(int pos) { return ITEMS.get(pos); }
 
     public int getSize(){ return ITEMS.size(); }
 
