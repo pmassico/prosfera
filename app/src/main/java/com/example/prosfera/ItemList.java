@@ -15,29 +15,21 @@ import java.util.List;
 public class ItemList {
 
     // An array of Items
+    // Should be common among all itemlist instantiations
     private static final List<Item> ITEMS = new ArrayList<>();
 
     // Constructor
-    public ItemList() {
-        // Add some sample items.
-        for (int i = 0; i < 3; i++) {
-            ITEMS.add(createDummyItem(i, 5, "Item "+i, "Dummy item", i, 10));
-        }
+    public ItemList() { }
+
+    public void addItem(Item item) {
+        ITEMS.add(item);
     }
 
-    private static Item createDummyItem(int itID, int currQty, String nm, String desc, int prce,
-                                        int thresh){
-
-        return new Item(itID, currQty, nm, desc, prce, thresh);
-    }
-
-    public Item getItem(int pos) {
-        return ITEMS.get(pos);
-    }
+    public Item getItem(int pos) { return ITEMS.get(pos); }
 
     public int getSize(){ return ITEMS.size(); }
 
-
+  
     // This method is used to read in the items.json file and create a list of Item objects.
     //**IMPORTANT: See comment on loadJSONFromAsset() method below on passed context parameter**
     public ArrayList<Item> initItemList(Context context){
@@ -95,5 +87,6 @@ public class ItemList {
         }
         return json;
     }
+  
 }
 
