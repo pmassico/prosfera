@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import java.util.ArrayList;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
 
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         // passes this id of featured item to activity
         // uses itemlist to grab item based on Id
         i.putExtra("itemId", featuredItem.getItemID());
-
+      
         startActivity(i);
     }
 
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     private void initFeaturedItem(Item item) {
         // Note: Should featured item be removed from regular wishlist?
         this.featuredItem = item;
-
+      
 
         // initialize views
         final TextView featuredDescription = findViewById(R.id.featuredDescription);
