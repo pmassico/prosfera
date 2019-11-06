@@ -1,6 +1,8 @@
 package com.example.prosfera;
 
-public class Item {
+import java.io.Serializable; //This is needed in order to pass objects using intents (i.e. in ItemDetails activity)
+
+public class Item implements Serializable{
 
     private int itemID, currentQty, price, threshold, calculatedPerc;
     private String name, description;

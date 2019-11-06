@@ -25,10 +25,14 @@ public class ItemDetails extends AppCompatActivity {
         details_description = findViewById(R.id.details_description);
         details_image =  findViewById(R.id.details_image);
 
-        Intent intent = getIntent();
-        String receivedName = intent.getStringExtra("name");
-        String receivedDesc = intent.getStringExtra("desc");
-        String receivedImage = intent.getStringExtra("image");
+        Intent intent = this.getIntent();
+        Bundle bundle = intent.getExtras();
+
+        Item receivedItem = (Item)bundle.getSerializable("itemObj");
+
+        String receivedName = receivedItem.getName();
+        String receivedDesc = receivedItem.getDescription();
+        String receivedImage = receivedItem.getImageFile();
 
         details_item_Name.setText(receivedName);
         details_description.setText(receivedDesc);
@@ -45,9 +49,9 @@ public class ItemDetails extends AppCompatActivity {
     //*********This method should be moved to the item-fragment onclick activity (main??) *******
     public void openItemDetails(Item itm) {
         Intent intent = new Intent(this, ItemDetails.class);
-        intent.putExtra("name", itm.getName());
-        intent.putExtra("desc", itm.getDescription());
-        intent.putExtra("name", itm.getImageFile());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("itemObj", itm);
+        intent.putExtras(bundle);
 
         startActivity(intent);
     }
