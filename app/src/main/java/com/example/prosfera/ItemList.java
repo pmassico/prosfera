@@ -16,10 +16,13 @@ public class ItemList {
 
     // An array of Items
     // Should be common among all itemlist instantiations
-    private static final List<Item> ITEMS = new ArrayList<>();
+    // Christine - Removed final (final cannot be assigned again in constructor)
+    private static List<Item> ITEMS = new ArrayList<>();
 
     // Constructor
-    public ItemList() { }
+    public ItemList(Context context) {
+        ITEMS = initItemList(context);
+    }
 
     public void addItem(Item item) {
         ITEMS.add(item);

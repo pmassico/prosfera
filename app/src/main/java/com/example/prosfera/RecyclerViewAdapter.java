@@ -27,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
     private static final String TAG = "RecyclerViewAdapter";
-    private ItemList mItemList = new ItemList();
+    private ItemList mItemList;
     private ArrayList<String> mImageNames = new ArrayList<>();
     private ArrayList<String> mImages = new ArrayList<>();
     private Context mContext;
@@ -37,6 +37,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.mImageNames = mImageNames;
         this.mImages = mImages;
         this.mContext = mContext;
+         this.mItemList = new ItemList(mContext);
     }
 
     @NonNull

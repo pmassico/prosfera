@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     //vars
-    private ItemList il = new ItemList();
+    private ItemList il;
     private Item featuredItem;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        il =  new ItemList(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -53,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
 
-        // TODO: IMPORTANT! app does not run because itemlist needs to be instantiated
         initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
