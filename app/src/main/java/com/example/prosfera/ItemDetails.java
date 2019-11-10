@@ -3,13 +3,10 @@ package com.example.prosfera;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import java.util.ArrayList;
 
 // See https://larntech.net/android-custom-listview-that-open-new-activity-to-display-clicked-item/
 
@@ -18,12 +15,11 @@ public class ItemDetails extends AppCompatActivity {
     private static final String TAG = "ItemDetails";
     TextView details_item_Name, details_description;
     ImageView details_image;
-    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_details);
+        setContentView(R.layout.activity_item_details);
 
         Log.d(TAG, "onCreate: started.");
 

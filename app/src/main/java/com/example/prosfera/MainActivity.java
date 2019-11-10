@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     //vars
-    private ItemList il;
+    private ItemList il; //Can't get context prior to onCreate. Initialized below
     private Item featuredItem;
     private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<Integer> mImageUrls = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: ");
 
         RecyclerView rv = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -141,7 +141,14 @@ public class MainActivity extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
 
+        for(int i=0; i < il.getSize(); i++) {
+            Item item = il.getItem(i);
+            int resID = getResources().getIdentifier(item.getImageFile(), "drawable", getPackageName());
+            mImageUrls.add(resID);
+            mNames.add(item.getName());
+        }
 
+        /*
         //TODO: add reference to items
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
         mNames.add("Havasu Falls");
@@ -169,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
         mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
         mNames.add("Washington");
+        */
 
         initRecyclerView();
 

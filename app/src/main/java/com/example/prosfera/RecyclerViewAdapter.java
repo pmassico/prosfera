@@ -2,16 +2,22 @@ package com.example.prosfera;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.PopupWindow;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 
@@ -29,11 +35,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
     private ItemList mItemList;
     private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImages = new ArrayList<>();
+    private ArrayList<Integer> mImages = new ArrayList<>(); //changed to be resIDs
     private Context mContext;
+    private PopupWindow popup;
 
     // TODO: Change objects in constructor, add progressbar and price
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImages) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<Integer> mImages) {
         this.mImageNames = mImageNames;
         this.mImages = mImages;
         this.mContext = mContext;
@@ -52,11 +59,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
-        Glide.with(mContext)
-                .asBitmap()
-                .load(mImages.get(position))
-                .into(holder.image);
+        //Glide.with(mContext)
+         //       .asBitmap()
+         //       .load(mImages.get(position))
+         //       .into(holder.image);
 
+        holder.image.setImageResource(mImages.get(position));
         holder.imageName.setText(mImageNames.get(position));
 
         holder.rl.setOnClickListener(new View.OnClickListener() {
@@ -64,10 +72,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick(View v) {
 
                 Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
+                View container = LayoutInflater.from(v.getContext()).inflate(R.layout.layout_listitem_popup, null);
+                popup = new PopupWindow(container, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.WRAP_CONTENT);
+                popup.showAtLocation(v, Gravity.CENTER, 0, 0);
+
+                ImageButton img = (ImageButton) container.findViewById(R.id.button_qty_increment);
+                img.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Log.d(TAG, "onClick: clicked on increment button");
+                    }
+                });
+
+
+                container.setOnTouchListener(new View.OnTouchListener(){
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        popup.dismiss();
+                        return true;
+                    }
+                });
+            }
                 //joanna: onclick methods can go in here
                 // you could take in which screen is loaded,
                 // and have a conditional that picks which onClick to load
-            }
+
         });
     }
 
