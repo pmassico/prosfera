@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> mImageUrls = new ArrayList<>();
     private ArrayList<Integer> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
+    private ArrayList<Integer> mQuantities  = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: ");
 
         RecyclerView rv = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
             mNames.add(item.getName());
             mPrices.add(item.getPrice());
             mProgress.add(item.getCalculatedPerc());
+            mQuantities.add(1);
         }
 
         /*

@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.Inflater;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,16 +43,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private ArrayList<Integer> mImages = new ArrayList<>(); //changed to be resIDs
     private ArrayList<Integer> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
+    private ArrayList<Integer> mQuantities = new ArrayList<>();
     private Context mContext;
     private PopupWindow popup;
 
     // TODO: Change objects in constructor, add progressbar and price
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<Integer> mImages, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress) {
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<Integer> mImages, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress,
+                               ArrayList<Integer> mQuantities) {
         this.mImageNames = mImageNames;
         this.mImages = mImages;
         this.mPrices = mPrices;
         this.mContext = mContext;
         this.mProgress = mProgress;
+        this.mQuantities = mQuantities;
          this.mItemList = new ItemList(mContext);
     }
 
@@ -66,15 +70,40 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        Log.d(TAG, "onBindViewHolder: called.");
+        Log.d(TAG, "onBindViewHolder: called with 2 parameters.");
         //Glide.with(mContext)
          //       .asBitmap()
          //       .load(mImages.get(position))
          //       .into(holder.image);
 
+        bindFunc(holder, position);
+
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> qtyArray) {
+        Log.d(TAG, "onBindViewHolder: called with 3 parameters.");
+        if(!qtyArray.isEmpty()) {
+            if (qtyArray.get(0) instanceof String) {
+                holder.quantity.setText(String.valueOf(qtyArray.get(0)));
+            }
+            //ArrayList<String> newQty = new ArrayList<String>();
+            //for (int i = 0; i < qtyArray.size(); i++) {
+            //    newQty.add(qtyArray.get(i).toString());
+            //}
+            //holder.quantity.setText(newQty.get(position));
+            //bindFunc(holder, position);
+        } else {
+            super.onBindViewHolder(holder,position, qtyArray);
+        }
+    }
+
+    private void bindFunc(@NonNull ViewHolder holder, final int position){
+
         holder.image.setImageResource(mImages.get(position));
         holder.imageName.setText(mImageNames.get(position));
         holder.price.setText(Integer.toString(mPrices.get(position)));
+        holder.quantity.setText(Integer.toString(mQuantities.get(position)));
         holder.progress.setMax(100);
         holder.progress.setProgress(mProgress.get(position));
 
@@ -100,6 +129,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 // Set data of popup window to match clicked element
                 name.setText(clickedItem.getName());
+                //qty.getText().toString().trim();
                 qty.setText("1");
                 price.setText(Integer.toString(clickedItem.getPrice())); //calculated total?
                 progress.setProgress(clickedItem.getCalculatedPerc());
@@ -112,10 +142,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 CircleImageView okay_button = container.findViewById(R.id.button_ok);
                 CircleImageView exit_button =container.findViewById(R.id.button_exit);
 
-                //TODO: implement click handlers for buttons
-
-                //test change quantity
-
                 details.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v){
@@ -126,7 +152,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         intent.putExtras(bundle);
 
                         mContext.startActivity(intent);
-                        }
+                    }
                 });
 
                 qty_increment.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +165,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 });
 
+                qty_decrement.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Log.d(TAG, "onClick: clicked on decrement button");
+                        int qty_text = Integer.parseInt(qty.getText().toString().trim());
+                        if(qty_text > 1){
+                            qty_text--;
+                        }
+                        qty.setText(Integer.toString(qty_text));
+                    }
+                });
+
+                okay_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Log.d(TAG, "onClick: clicked on okay button");
+                        //mQuantities.set(position, Integer.parseInt(qty.getText().toString().trim()));
+                        //RecyclerViewAdapter.this.notifyItemChanged(position, mQuantities);
+                        RecyclerViewAdapter.this.notifyItemChanged(position, qty.getText().toString().trim());
+                        popup.dismiss();
+                    }
+                });
+
+                exit_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Log.d(TAG, "onClick: clicked on exit button");
+                        popup.dismiss();
+                    }
+                });
 
                 container.setOnTouchListener(new View.OnTouchListener(){
                     @Override
@@ -151,6 +207,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
     }
 
+
     // size of item list = number of items loaded into recyclerV iew
     @Override
     public int getItemCount() { return mImageNames.size(); }
@@ -161,6 +218,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView imageName;
         TextView price;
         ProgressBar progress;
+        EditText quantity;
         RelativeLayout rl;
 
         public ViewHolder(@NonNull View itemView) {
@@ -169,6 +227,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageName = itemView.findViewById(R.id.image_name);
             price = itemView.findViewById(R.id.itemPrice);
             progress = itemView.findViewById(R.id.progressView);
+            quantity = itemView.findViewById(R.id.itemQty);
             rl = itemView.findViewById(R.id.parent_layout);
         }
     }
