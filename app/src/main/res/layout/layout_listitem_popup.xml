@@ -21,20 +21,20 @@
             android:background="@drawable/roundcorners"
             android:text="Details" />
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/button_qty_increment"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/circlebutton"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_input_add"
+            />
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/button_ok"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/circlebutton"
-            android:src="@android:drawable/checkbox_on_background" />
+            android:src="@android:drawable/checkbox_on_background"
+            />
 
     </LinearLayout>
 
@@ -49,22 +49,21 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/button_qty_decrement"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="285dp"
             android:layout_marginRight="16dp"
-            android:background="@drawable/circlebutton"
-            android:src="@android:drawable/button_onoff_indicator_off"
-            tools:src="@android:drawable/button_onoff_indicator_on" />
+            android:src="@android:drawable/button_onoff_indicator_on"
+            />
 
-        <ImageButton
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/button_exit"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/circlebutton"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@android:drawable/ic_delete"
+            />
 
     </LinearLayout>
 </LinearLayout>

@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private Item featuredItem;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<Integer> mImageUrls = new ArrayList<>();
+    private ArrayList<Integer> mPrices = new ArrayList<>();
+    private ArrayList<Integer> mProgress = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: ");
 
         RecyclerView rv = findViewById(R.id.recyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -141,11 +143,13 @@ public class MainActivity extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
 
+        //TODO: add qty and price to items; Get images to show
         for(int i=0; i < il.getSize(); i++) {
             Item item = il.getItem(i);
-            int resID = getResources().getIdentifier(item.getImageFile(), "drawable", getPackageName());
-            mImageUrls.add(resID);
+            mImageUrls.add(item.getImageResID(MainActivity.this));
             mNames.add(item.getName());
+            mPrices.add(item.getPrice());
+            mProgress.add(item.getCalculatedPerc());
         }
 
         /*

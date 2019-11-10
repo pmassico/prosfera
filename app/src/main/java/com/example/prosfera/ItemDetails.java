@@ -53,14 +53,4 @@ public class ItemDetails extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    //*********This method should be moved to the item-fragment onclick activity (main??) *******
-    public void openItemDetails(Item itm) {
-        Intent intent = new Intent(this, ItemDetails.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("itemObj", itm);
-        intent.putExtras(bundle);
-
-        startActivity(intent);
-    }
-
 }
