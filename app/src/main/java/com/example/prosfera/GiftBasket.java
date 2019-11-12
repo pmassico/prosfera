@@ -36,6 +36,7 @@ public class GiftBasket extends AppCompatActivity {
         //Bundle itemData = getIntent().getExtras();
         ItemList il = new ItemList();
 
+        // Populates basket
         initImageBitmaps();
 
         // handles if data returned is null
@@ -85,17 +86,18 @@ public class GiftBasket extends AppCompatActivity {
     private void initBasketRecyclerView(){
         Log.d(TAG, "initBasketRecyclerView: called.");
 
-        RecyclerView rv = findViewById(R.id.basketRecycler);
+        RecyclerView rv1 = findViewById(R.id.basketRecycler);
 
         // TODO: Conditionally load data structures (wishlistNames or basketNames)
         // TODO: Add progress bar and prices to constructor
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls);
-        rv.setAdapter(adapter);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setHasFixedSize(true);
+        RecyclerViewAdapter adapter1 = new RecyclerViewAdapter(this, mNames, mImageUrls);
+        rv1.setAdapter(adapter1);
+        rv1.setLayoutManager(new LinearLayoutManager(this));
+        rv1.setHasFixedSize(true);
     }
 
     // FOR TESTING
+    // This is how the basket is being populated
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
 
