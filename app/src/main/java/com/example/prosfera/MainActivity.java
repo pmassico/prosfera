@@ -35,26 +35,30 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    //vars
+    // vars
     private ItemList il = new ItemList();
     private Item featuredItem;
+
+    // NOTE: Not the best way to load item information
+    // (can just point to item in item list and use getters)
+    // However, it HAS to be done this way because that's how the RecyclerView is set up
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
+    private ArrayList<String> mPrices = new ArrayList<>();
+    private int[] mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
 
         // TODO: IMPORTANT! app does not run because itemlist needs to be instantiated
-        initFeaturedItem(il.getItem(0));
+        //initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
         /**
@@ -68,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         });**/
 
     }
-
 
     public void onFeaturedClick(View view){
         Log.d(TAG, "onFeaturedClick: card clicked.");
@@ -132,6 +135,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: ");
 
         RecyclerView rv = findViewById(R.id.recyclerView);
+
+        // TODO: Conditionally load data structures (wishlistNames or basketNames)
+        // TODO: Add progress bar and prices to constructor
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));

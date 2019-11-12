@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +43,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // If page == Basket, load recycler view with the session items
+
+        // TODO: Add condition: if loaded via this button or page -> inflate this item
+        // If loaded by wishlist, inflate layout_listitem
+        // If loaded by basket, inflate layout_basketitem
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
@@ -80,11 +85,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView imageName;
         RelativeLayout rl;
 
+        // UNCOMMENT ONCE CONSTRUCTOR IS CHANGED
+        //ProgressBar pb;
+        //TextView price;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             imageName = itemView.findViewById(R.id.image_name);
             rl = itemView.findViewById(R.id.parent_layout);
+            //pb = itemView.findViewById(R.id.progressView);
+            //print = itemView.findViewById(R.id.itemPrice);
 
         }
     }
