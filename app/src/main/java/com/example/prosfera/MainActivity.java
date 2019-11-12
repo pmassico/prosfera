@@ -61,15 +61,25 @@ public class MainActivity extends AppCompatActivity {
         //initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
-        /**
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Log.d(TAG, "onClick: basket fab clicked");
+
+                Intent in = new Intent(MainActivity.this, GiftBasket.class);
+
+                // To pass in extra data:
+                //i.putExtra("cartId", featuredItem.getItemID());
+
+                startActivity(in);
+
+                // Unneeded default code
+                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //         .setAction("Action", null).show();
             }
-        });**/
+        });
 
     }
 
@@ -86,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         // passes this id of featured item to activity
         // uses itemlist to grab item based on Id
         i.putExtra("itemId", featuredItem.getItemID());
-      
+
         startActivity(i);
     }
 
@@ -141,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setHasFixedSize(true);
     }
 
     // Set which images/data to load

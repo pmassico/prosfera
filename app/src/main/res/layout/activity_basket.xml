@@ -5,18 +5,18 @@
     android:layout_height="match_parent"
     android:padding="12dp">
 
-    <RelativeLayout
-        android:id="@+id/basketContents"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/basketRecycler"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@id/basketHeader">
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/basketHeader"
+        android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/basketHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="@string/basketHeader_text"
         android:textColor="#000000"
         android:textSize="28sp"
@@ -36,9 +36,10 @@
         android:id="@+id/basketTotalPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/basketContents"
-        android:layout_alignRight="@id/basketContents"
+        android:layout_below="@id/basketRecycler"
+        android:layout_alignRight="@id/basketRecycler"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
         android:foregroundGravity="right"
         android:gravity="right"
         android:text="@string/cartTotal"
