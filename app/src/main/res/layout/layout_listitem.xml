@@ -20,8 +20,7 @@
         <RelativeLayout
             android:id="@+id/card_innerLayout"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
+            android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image"

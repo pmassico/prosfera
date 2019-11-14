@@ -54,7 +54,7 @@ public class Receipt {
                 + "\nDate Issued: " + this.dateIssued
                 + "\nCharity Registration Number: " + this.uniqueSerialNum
 
-                //The basket ID will likely not be needed here, but I'm including it for
+                //The activity_basket ID will likely not be needed here, but I'm including it for
                 // potential testing purposes. Data from the Basket class would take its place
                 + "\nBasket ID: " + this.basketID;
     }

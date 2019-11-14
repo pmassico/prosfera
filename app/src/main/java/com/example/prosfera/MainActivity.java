@@ -38,9 +38,15 @@ public class MainActivity extends AppCompatActivity {
     //vars
     private ItemList il; //Can't get context prior to onCreate. Initialized below
     private Item featuredItem;
+
+    // NOTE: Not the best way to load item information
+    // (can just point to item in item list and use getters)
+    // However, it HAS to be done this way because that's how the RecyclerView is set up
     private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<Integer> mImageUrls = new ArrayList<>();
+    private ArrayList<Integer> mImageUrls = new ArrayList<>(); //Change to string when converting to bitmaps
     private ArrayList<Integer> mPrices = new ArrayList<>();
+  //Prices should potentially be strings?
+  //private ArrayList<String> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
     private ArrayList<Integer> mQuantities  = new ArrayList<>();
 
@@ -50,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         il =  new ItemList(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
@@ -60,18 +66,27 @@ public class MainActivity extends AppCompatActivity {
         initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
-        /**
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Log.d(TAG, "onClick: basket fab clicked");
+
+                Intent in = new Intent(MainActivity.this, GiftBasket.class);
+
+                // To pass in extra data:
+                //i.putExtra("cartId", featuredItem.getItemID());
+
+                startActivity(in);
+
+                // Unneeded default code
+                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //         .setAction("Action", null).show();
             }
-        });**/
+        });
 
     }
-
 
     public void onFeaturedClick(View view){
         Log.d(TAG, "onFeaturedClick: card clicked.");
@@ -86,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         // passes this id of featured item to activity
         // uses itemlist to grab item based on Id
         i.putExtra("itemId", featuredItem.getItemID());
-      
+
         startActivity(i);
     }
 
@@ -135,9 +150,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: ");
 
         RecyclerView rv = findViewById(R.id.recyclerView);
+
+        // TODO: Conditionally load data structures (wishlistNames or basketNames)
+
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setHasFixedSize(true);
     }
 
     // Set which images/data to load

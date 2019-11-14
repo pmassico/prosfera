@@ -17,6 +17,7 @@ public class ItemList {
     // An array of Items
     // Should be common among all itemlist instantiations
     private static final List<Item> ITEMS = new ArrayList<>();
+    Context context;
 
     // Constructor
     public ItemList(Context context) {
@@ -57,9 +58,11 @@ public class ItemList {
                 //System.out.println(itm);
                 ITEMS.add(itm);
             }
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     //This method can be used to read a JSON string from a file in the assets folder.

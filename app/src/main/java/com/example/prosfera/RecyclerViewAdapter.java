@@ -62,7 +62,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // If page == Basket, load recycler view with the session items
+
+        // TODO: Add condition: if loaded via this button or page -> inflate this item
+        // If loaded by wishlist, inflate layout_listitem
+        // If loaded by activity_basket, inflate layout_basketitem
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
