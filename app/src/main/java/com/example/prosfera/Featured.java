@@ -17,7 +17,7 @@ public class Featured extends AppCompatActivity {
         setContentView(R.layout.activity_featured);
 
         Bundle itemData = getIntent().getExtras();
-        ItemList il = new ItemList();
+        ItemList il = new ItemList(this);
 
         // handles if data returned is null
         if (itemData == null) {

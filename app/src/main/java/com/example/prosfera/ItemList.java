@@ -19,7 +19,11 @@ public class ItemList {
     private static final List<Item> ITEMS = new ArrayList<>();
 
     // Constructor
-    public ItemList() { }
+    public ItemList(Context context) {
+        if(ITEMS.isEmpty()) {
+            initItemList(context);
+        }
+    }
 
     public void addItem(Item item) {
         ITEMS.add(item);
@@ -31,19 +35,15 @@ public class ItemList {
 
   
     // This method is used to read in the items.json file and create a list of Item objects.
-    //**IMPORTANT: See comment on loadJSONFromAsset() method below on passed context parameter**
-    public ArrayList<Item> initItemList(Context context){
+    private static void initItemList(Context context) {
         try {
-            //List to hold the Item objects
-            ArrayList<Item> itemList = new ArrayList<>();
-
             //Assuming that the default current quantity on startup is 1
             int default_qty = 1;
 
             JSONObject obj = new JSONObject(loadJSONFromAsset("items.json", context));
             JSONArray itemsArray = obj.getJSONArray("items");
 
-            for (int i=0; i < itemsArray.length(); i++){
+            for (int i = 0; i < itemsArray.length(); i++) {
 
                 JSONObject item = itemsArray.getJSONObject(i);
                 String name = item.getString("name");
@@ -52,25 +52,19 @@ public class ItemList {
                 String image = item.getString("image");
                 int threshold = item.getInt("threshold");
 
-                Item itm = new Item(i+1, default_qty, name, desc, price, threshold, image);
+                Item itm = new Item(i + 1, default_qty, name, desc, price, threshold, image);
                 //For testing:
                 //System.out.println(itm);
-                itemList.add(itm);
+                ITEMS.add(itm);
             }
-
-            return itemList;
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-
-    //**IMPORTANT: getAssets() worked in mainActivity, but now it needs to be passed a context since it is in a different class**
     //This method can be used to read a JSON string from a file in the assets folder.
     //See https://stackoverflow.com/questions/19945411/android-java-how-can-i-parse-a-local-json-file-from-assets-folder-into-a-listvi/19945484#19945484
-    public String loadJSONFromAsset(String assetName, Context context){
+    private static String loadJSONFromAsset(String assetName, Context context){
         String json;
         try {
             InputStream in = context.getAssets().open(assetName);
