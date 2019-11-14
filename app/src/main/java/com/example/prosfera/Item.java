@@ -1,5 +1,7 @@
 package com.example.prosfera;
 
+import android.content.Context;
+
 import java.io.Serializable; //This is needed in order to pass objects using intents (i.e. in ItemDetails activity)
 
 public class Item implements Serializable{
@@ -66,6 +68,7 @@ public class Item implements Serializable{
 
     public int getCalculatedPerc()
     {
+        updatePercentage();
         return calculatedPerc;
     }
 
@@ -106,4 +109,10 @@ public class Item implements Serializable{
     }
 
     public void updatePercentage() { this.calculatedPerc = this.currentQty/this.threshold; }
+
+
+    public int getImageResID(Context context) {
+        int resID = context.getResources().getIdentifier(imageFile, "drawable", context.getPackageName());
+        return resID;
+    }
 }

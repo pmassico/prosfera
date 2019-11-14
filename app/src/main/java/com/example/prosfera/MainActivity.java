@@ -35,30 +35,35 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    // vars
-    private ItemList il = new ItemList();
+    //vars
+    private ItemList il; //Can't get context prior to onCreate. Initialized below
     private Item featuredItem;
 
     // NOTE: Not the best way to load item information
     // (can just point to item in item list and use getters)
     // However, it HAS to be done this way because that's how the RecyclerView is set up
     private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mPrices = new ArrayList<>();
-    private int[] mProgress;
+    private ArrayList<Integer> mImageUrls = new ArrayList<>(); //Change to string when converting to bitmaps
+    private ArrayList<Integer> mPrices = new ArrayList<>();
+  //Prices should potentially be strings?
+  //private ArrayList<String> mPrices = new ArrayList<>();
+    private ArrayList<Integer> mProgress = new ArrayList<>();
+    private ArrayList<Integer> mQuantities  = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        il =  new ItemList(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Log that activity started
         Log.d(TAG, "onCreate: started.");
 
-        // TODO: IMPORTANT! app does not run because itemlist needs to be instantiated
-        //initFeaturedItem(il.getItem(0));
+        initFeaturedItem(il.getItem(0));
         initImageBitmaps();
 
 
@@ -147,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.recyclerView);
 
         // TODO: Conditionally load data structures (wishlistNames or basketNames)
-        // TODO: Add progress bar and prices to constructor
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(this, mNames, mImageUrls);
+
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
@@ -158,7 +163,17 @@ public class MainActivity extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
 
+        //TODO: add qty and price to items; Get images to show
+        for(int i=0; i < il.getSize(); i++) {
+            Item item = il.getItem(i);
+            mImageUrls.add(item.getImageResID(MainActivity.this));
+            mNames.add(item.getName());
+            mPrices.add(item.getPrice());
+            mProgress.add(item.getCalculatedPerc());
+            mQuantities.add(1);
+        }
 
+        /*
         //TODO: add reference to items
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
         mNames.add("Havasu Falls");
@@ -186,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
         mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
         mNames.add("Washington");
+        */
 
         initRecyclerView();
 
