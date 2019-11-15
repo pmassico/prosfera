@@ -8,7 +8,7 @@ public class Item implements Serializable{
 
     private int itemID, currentQty, price, threshold, calculatedPerc;
     private String name, description;
-    private String imageFile; //not sure how an image will be stored
+    private String imageURL; //not sure how an image will be stored
     //visible (flag)
     //featured/promoted (flag)
 
@@ -20,7 +20,7 @@ public class Item implements Serializable{
         this.description = desc;
         this.price       = prce;
         this.threshold   = thresh;
-        this.imageFile   = null;
+        this.imageURL   = null;
         updatePercentage(); //constructor doesn't really need to update the percentage
     }
 
@@ -33,7 +33,7 @@ public class Item implements Serializable{
         this.description = desc;
         this.price       = prce;
         this.threshold   = thresh;
-        this.imageFile   = image;
+        this.imageURL   = image;
         updatePercentage(); //constructor doesn't really need to update the percentage
     }
 
@@ -61,9 +61,9 @@ public class Item implements Serializable{
 
     public int getThreshold() { return threshold; }
 
-    public String getImageFile()
+    public String getImageURL()
     {
-        return imageFile;
+        return imageURL;
     }
 
     public int getCalculatedPerc()
@@ -105,14 +105,9 @@ public class Item implements Serializable{
 
     public void setImageFile(String res_name)
     {
-        imageFile = res_name;
+        imageURL = res_name;
     }
 
     public void updatePercentage() { this.calculatedPerc = this.currentQty/this.threshold; }
 
-
-    public int getImageResID(Context context) {
-        int resID = context.getResources().getIdentifier(imageFile, "drawable", context.getPackageName());
-        return resID;
-    }
 }
