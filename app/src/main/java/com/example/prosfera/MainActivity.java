@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import java.util.ArrayList;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -112,12 +113,15 @@ public class MainActivity extends AppCompatActivity {
         // initialize views
         final TextView featuredDescription = findViewById(R.id.featuredDescription);
         final TextView featuredTitle = findViewById(R.id.featuredTitle);
-        //final ImageView featuredImage = findViewById(R.id.featuredPic);
+        final ImageView featuredImage = findViewById(R.id.featuredPic);
 
         // set their contents
         featuredTitle.setText(item.getName());
         featuredDescription.setText(item.getDescription());
-        //featuredImage.setImageResource();
+        Glide.with(MainActivity.this)
+                .asBitmap()
+                .load(item.getImageURL())
+                .into(featuredImage);
 
         // Should we dispose of the text/image views after we're done using them? Probably?
     }
