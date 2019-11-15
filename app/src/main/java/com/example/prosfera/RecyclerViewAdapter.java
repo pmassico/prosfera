@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
     private ItemList mItemList;
     private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<Integer> mImages = new ArrayList<>(); //changed to be resIDs
+    private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<Integer> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
     private ArrayList<Integer> mQuantities = new ArrayList<>();
@@ -48,10 +48,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private PopupWindow popup;
 
     // TODO: Change objects in constructor, add progressbar and price
-    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<Integer> mImages, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress,
+    public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImageUrls, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress,
                                ArrayList<Integer> mQuantities) {
         this.mImageNames = mImageNames;
-        this.mImages = mImages;
+        this.mImageUrls = mImageUrls;
         this.mPrices = mPrices;
         this.mContext = mContext;
         this.mProgress = mProgress;
@@ -104,7 +104,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private void bindFunc(@NonNull ViewHolder holder, final int position){
 
-        holder.image.setImageResource(mImages.get(position));
+        //holder.image.setImageResource(mImageUrls.get(position));
         holder.imageName.setText(mImageNames.get(position));
         holder.price.setText(Integer.toString(mPrices.get(position)));
         holder.quantity.setText(Integer.toString(mQuantities.get(position)));

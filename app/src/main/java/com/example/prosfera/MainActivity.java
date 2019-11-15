@@ -43,10 +43,8 @@ public class MainActivity extends AppCompatActivity {
     // (can just point to item in item list and use getters)
     // However, it HAS to be done this way because that's how the RecyclerView is set up
     private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<Integer> mImageUrls = new ArrayList<>(); //Change to string when converting to bitmaps
+    private ArrayList<String> mImageUrls = new ArrayList<>();
     private ArrayList<Integer> mPrices = new ArrayList<>();
-  //Prices should potentially be strings?
-  //private ArrayList<String> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
     private ArrayList<Integer> mQuantities  = new ArrayList<>();
 
@@ -163,10 +161,11 @@ public class MainActivity extends AppCompatActivity {
     private void initImageBitmaps(){
         Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
 
-        //TODO: add qty and price to items; Get images to show
+        //TODO: Get images to show
         for(int i=0; i < il.getSize(); i++) {
             Item item = il.getItem(i);
-            mImageUrls.add(item.getImageResID(MainActivity.this));
+            //mImageUrls.add(item.getImageResID(MainActivity.this));
+            mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
             mNames.add(item.getName());
             mPrices.add(item.getPrice());
             mProgress.add(item.getCalculatedPerc());
