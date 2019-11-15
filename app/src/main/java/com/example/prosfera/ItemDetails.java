@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 // See https://larntech.net/android-custom-listview-that-open-new-activity-to-display-clicked-item/
 
 public class ItemDetails extends AppCompatActivity {
@@ -35,13 +37,15 @@ public class ItemDetails extends AppCompatActivity {
 
             String receivedName = receivedItem.getName();
             String receivedDesc = receivedItem.getDescription();
-            String receivedImage = receivedItem.getImageFile();
+            String receivedImage = receivedItem.getImageURL();
 
             details_item_Name.setText(receivedName);
             details_description.setText(receivedDesc);
 
-            int resID = getResources().getIdentifier(receivedImage, "drawable", getPackageName());
-            details_image.setImageResource(resID);
+            Glide.with(this)
+                    .asBitmap()
+                    .load(receivedImage)
+                    .into(details_image);
         }
         catch(NullPointerException e){
             System.out.println("ItemDetails.java: Could not get item details");

@@ -50,7 +50,7 @@ public class ItemList {
                 String name = item.getString("name");
                 String desc = item.getString("description");
                 int price = item.getInt("price");
-                String image = item.getString("image");
+                String image = item.getString("imageURL");
                 int threshold = item.getInt("threshold");
 
                 Item itm = new Item(i + 1, default_qty, name, desc, price, threshold, image);

@@ -75,10 +75,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called with 2 parameters.");
-        //Glide.with(mContext)
-         //       .asBitmap()
-         //       .load(mImages.get(position))
-         //       .into(holder.image);
+        Glide.with(mContext)
+                .asBitmap()
+                .load(mImageUrls.get(position))
+                .into(holder.image);
 
         bindFunc(holder, position);
 
@@ -137,7 +137,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 qty.setText("1");
                 price.setText(Integer.toString(clickedItem.getPrice())); //calculated total?
                 progress.setProgress(clickedItem.getCalculatedPerc());
-                img.setImageResource(clickedItem.getImageResID(mContext));
 
                 // Find button elements of popup container
                 TextView details = container.findViewById(R.id.button_details);
