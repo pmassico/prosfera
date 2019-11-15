@@ -21,10 +21,13 @@ public class GiftBasket extends AppCompatActivity {
     private double total;
 
     // temp vars for testing
+
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<String> mPrices = new ArrayList<>();
-    private int[] mProgress;
+    private ArrayList<Integer> mPrices = new ArrayList<>();
+    private ArrayList<Integer> mProgress = new ArrayList<>();
+    private ArrayList<Integer> mQuantities  = new ArrayList<>();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class GiftBasket extends AppCompatActivity {
         setContentView(R.layout.activity_basket);
 
         //Bundle itemData = getIntent().getExtras();
-        ItemList il = new ItemList();
+        ItemList il = new ItemList(this);
 
         // Populates basket
         initImageBitmaps();
@@ -89,8 +92,8 @@ public class GiftBasket extends AppCompatActivity {
         RecyclerView rv1 = findViewById(R.id.basketRecycler);
 
         // TODO: Conditionally load data structures (wishlistNames or basketNames)
-        // TODO: Add progress bar and prices to constructor
-        RecyclerViewAdapter adapter1 = new RecyclerViewAdapter(this, mNames, mImageUrls);
+
+        RecyclerViewAdapter adapter1 = new RecyclerViewAdapter(this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
         rv1.setAdapter(adapter1);
         rv1.setLayoutManager(new LinearLayoutManager(this));
         rv1.setHasFixedSize(true);
@@ -105,15 +108,31 @@ public class GiftBasket extends AppCompatActivity {
         //TODO: add reference to items
         mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
         mNames.add("Havasu Falls");
+        //temporary. These need to change
+        mPrices.add(5);
+        mProgress.add(30);
+        mQuantities.add(1);
 
         mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
         mNames.add("Trondheim");
+        //temporary. These need to change
+        mPrices.add(5);
+        mProgress.add(30);
+        mQuantities.add(1);
 
         mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
         mNames.add("Portugal");
+        //temporary. These need to change
+        mPrices.add(5);
+        mProgress.add(30);
+        mQuantities.add(1);
 
         mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
         mNames.add("Rocky Mountain National Park");
+        //temporary. These need to change
+        mPrices.add(5);
+        mProgress.add(30);
+        mQuantities.add(1);
 
         /**
         mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
