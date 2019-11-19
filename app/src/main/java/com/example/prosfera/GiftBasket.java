@@ -2,12 +2,17 @@ package com.example.prosfera;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,9 @@ public class GiftBasket extends AppCompatActivity {
     private ArrayList<Integer> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
     private ArrayList<Integer> mQuantities  = new ArrayList<>();
-
+    //Global
+    RecyclerViewAdapter adapter1;
+    RecyclerView rv1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +64,7 @@ public class GiftBasket extends AppCompatActivity {
         // instantiate views and set text
         //final TextView detailsTitle = findViewById(R.id.detailsTitle);
         //detailsTitle.setText(itemName);
+
     }
 //database connection here
 
@@ -89,14 +97,17 @@ public class GiftBasket extends AppCompatActivity {
     private void initBasketRecyclerView(){
         Log.d(TAG, "initBasketRecyclerView: called.");
 
-        RecyclerView rv1 = findViewById(R.id.basketRecycler);
+        rv1 = findViewById(R.id.basketRecycler);
 
         // TODO: Conditionally load data structures (wishlistNames or basketNames)
 
-        RecyclerViewAdapter adapter1 = new RecyclerViewAdapter(this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
+        adapter1 = new RecyclerViewAdapter(this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
         rv1.setAdapter(adapter1);
         rv1.setLayoutManager(new LinearLayoutManager(this));
         rv1.setHasFixedSize(true);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallBack);
+        itemTouchHelper.attachToRecyclerView(rv1);
     }
 
     // FOR TESTING
@@ -153,5 +164,42 @@ public class GiftBasket extends AppCompatActivity {
         initBasketRecyclerView();
 
     }
+
+    //holds the item that was deleted for the "undo" function
+
+    //Taken from https://www.youtube.com/watch?v=rcSNkSJ624U
+    ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+        @Override //Don't need this method unless we are rearranging RecyclerView items
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+            final int position = viewHolder.getAdapterPosition();
+            if(direction == ItemTouchHelper.LEFT) {
+                    final String delName = mNames.remove(position);
+                    final String delURL = mImageUrls.remove(position);
+                    final int delPrice = mPrices.remove(position);
+                    final int delProgress = mProgress.remove(position);
+                    final int delQty = mQuantities.remove(position);
+
+                    adapter1.notifyItemRemoved(position);
+                    Snackbar.make(rv1, "Removed from Basket", Snackbar.LENGTH_LONG)
+                        .setAction("Undo", new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view) {
+                                mNames.add(position, delName);
+                                mImageUrls.add(position, delURL);
+                                mPrices.add(position, delPrice);
+                                mProgress.add(position, delProgress);
+                                mQuantities.add(position, delQty);
+                                adapter1.notifyItemInserted(position);
+                            }
+                        }).show();
+            }
+        }
+    };
 
 }

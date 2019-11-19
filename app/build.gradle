@@ -32,6 +32,8 @@ dependencies {
 
     //glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
+    //For Snackbar on GiftBasket
+    implementation 'com.google.android.material:material:<version>'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
