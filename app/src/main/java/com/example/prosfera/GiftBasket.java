@@ -36,7 +36,8 @@ public class GiftBasket extends AppCompatActivity {
     private ArrayList<Integer> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
     private ArrayList<Integer> mQuantities  = new ArrayList<>();
-    //Global
+
+    //Created as globals to be used in onSwipe and onChildDraw (Swipe to delete)
     RecyclerViewAdapter adapter1;
     RecyclerView rv1;
 
