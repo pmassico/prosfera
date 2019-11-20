@@ -169,20 +169,22 @@ public class GiftBasket extends AppCompatActivity {
 
     }
 
-    //holds the item that was deleted for the "undo" function
-
-    //Taken from https://www.youtube.com/watch?v=rcSNkSJ624U
+    /*
+     * This section of code is to attach the "Swipe-to-delete" functionality on the Gift Basket.
+     * Custom libraries are used to create the "undo" Snackbar and decoration when an item is slid to the left.
+     * Taken from https://www.youtube.com/watch?v=rcSNkSJ624U
+     */
     ItemTouchHelper.SimpleCallback simpleCallBack = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
-        @Override //Don't need this method unless we are rearranging RecyclerView items
+        @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
-
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
             final int position = viewHolder.getAdapterPosition();
             if(direction == ItemTouchHelper.LEFT) {
+                    //Stores and removes the elements of the deleted item
                     final String delName = mNames.remove(position);
                     final String delURL = mImageUrls.remove(position);
                     final int delPrice = mPrices.remove(position);
@@ -192,6 +194,8 @@ public class GiftBasket extends AppCompatActivity {
                     adapter1.notifyItemRemoved(position);
                     Snackbar.make(rv1, "Removed from Basket", Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener(){
+
+                            //If undo is clicked, add the elements back into their arrays
                             @Override
                             public void onClick(View view) {
                                 mNames.add(position, delName);
@@ -204,6 +208,7 @@ public class GiftBasket extends AppCompatActivity {
                         }).show();
             }
         }
+        //This creates the background color and delete icon underneath a swiped item
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                                 float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -216,5 +221,4 @@ public class GiftBasket extends AppCompatActivity {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
-
 }
