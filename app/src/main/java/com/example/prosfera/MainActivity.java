@@ -17,7 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.text.Layout;
 import android.util.Log;
@@ -152,7 +154,8 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "initRecyclerView: ");
 
         RecyclerView rv = findViewById(R.id.recyclerView);
-
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(rv);
         // TODO: Conditionally load data structures (wishlistNames or basketNames)
 
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);

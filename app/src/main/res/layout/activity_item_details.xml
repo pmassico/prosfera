@@ -13,15 +13,6 @@
         android:orientation="vertical"
         tools:context=".ItemDetails">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
-
         <TextView
             android:id="@+id/details_header"
             android:layout_width="match_parent"

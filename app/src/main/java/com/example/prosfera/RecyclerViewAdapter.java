@@ -127,7 +127,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 ViewGroup root = (ViewGroup) v.getRootView();
 
                 // Inflates 'layout_listitem_popup.xml' as a centered popup window
-                View container = LayoutInflater.from(mContext).inflate(R.layout.layout_listitem_popup, root, false);
+                final View container = LayoutInflater.from(mContext).inflate(R.layout.layout_listitem_popup, root, false);
                 popup = new PopupWindow(container, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.WRAP_CONTENT);
 
                 // Closes the popup window when touch outside.
@@ -136,7 +136,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 // Removes default background.
                 popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                popup.showAtLocation(v, Gravity.CENTER, 0, 0);
+                int[] originalPos = new int[2];
+                v.getLocationInWindow(originalPos);
+                popup.showAsDropDown(v, 0, -v.getHeight() + container.getHeight()-148);
 
                 View parent;
                 if (android.os.Build.VERSION.SDK_INT > 22) {
