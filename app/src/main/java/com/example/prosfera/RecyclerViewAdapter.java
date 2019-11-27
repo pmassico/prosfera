@@ -1,12 +1,17 @@
 package com.example.prosfera;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -125,20 +131,50 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
 
                 ViewGroup root = (ViewGroup) v.getRootView();
+                final ScrollView sv = (ScrollView) root.findViewById(R.id.scroll);
+                sv.setSmoothScrollingEnabled(true);
 
                 // Inflates 'layout_listitem_popup.xml' as a centered popup window
                 final View container = LayoutInflater.from(mContext).inflate(R.layout.layout_listitem_popup, root, false);
                 popup = new PopupWindow(container, ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.WRAP_CONTENT);
 
-                // Closes the popup window when touch outside.
+                // Closes the popup window when touched outside.
                 popup.setOutsideTouchable(true);
                 popup.setFocusable(true);
                 // Removes default background.
                 popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                int[] originalPos = new int[2];
-                v.getLocationInWindow(originalPos);
-                popup.showAsDropDown(v, 0, -v.getHeight() + container.getHeight()-148);
+                final int[] screenPos = new int[2];
+                v.getLocationOnScreen(screenPos);
+
+                popup.showAsDropDown(v, 0, -v.getHeight() + container.getHeight()-150);
+
+                // This gets the height of the popup (before it has been drawn)
+                container.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+                final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+                final int popupHeight = container.getMeasuredHeight();
+
+                Log.d(TAG, "Screen height is " + screenHeight);
+                Log.d(TAG, "Clicked item is at " + screenPos[0] +" and "+screenPos[1] );
+                Log.d(TAG, "Popup height is " + popupHeight );
+
+                final int[] vertical_scroll = new int[]{0};
+
+                //if the item it too far down to entirely show the popup, scroll down
+                if(screenPos[1] > (screenHeight-popupHeight) && !(screenPos[1] < popupHeight)) {
+                    vertical_scroll[0] = popupHeight - (screenHeight - screenPos[1]);
+                }
+                //if the item it high up to entirely show the popup, scroll up
+                else if(!(screenPos[1] > (screenHeight-popupHeight)) && (screenPos[1] < popupHeight)) {
+                    vertical_scroll[0] = screenPos[1]-popupHeight + v.getHeight();
+                }
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        sv.smoothScrollBy(0, vertical_scroll[0]);
+                    } }, 200);
 
                 View parent;
                 if (android.os.Build.VERSION.SDK_INT > 22) {
