@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -128,6 +129,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 ViewGroup root = (ViewGroup) v.getRootView();
                 final ScrollView sv = (ScrollView) root.findViewById(R.id.scroll);
                 sv.setSmoothScrollingEnabled(true);
+                FloatingActionButton fab = root.findViewById(R.id.fab);
 
                 // Inflates 'layout_listitem_popup.xml' as a centered popup window
                 final View container = LayoutInflater.from(mContext).inflate(R.layout.layout_listitem_popup, root, false);
@@ -148,6 +150,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 container.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                 final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
                 final int popupHeight = container.getMeasuredHeight();
+                final int fabHeight = fab.getHeight();
 
                 Log.d(TAG, "Screen height is " + screenHeight);
                 Log.d(TAG, "Clicked item is at " + screenPos[0] +" and "+screenPos[1] );
@@ -157,7 +160,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 //if the item it too far down to entirely show the popup, scroll down
                 if(screenPos[1] > (screenHeight-popupHeight) && !(screenPos[1] < popupHeight)) {
-                    vertical_scroll[0] = popupHeight - (screenHeight - screenPos[1]);
+                    vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1])) + fabHeight;
                 }
                 //if the item it high up to entirely show the popup, scroll up
                 else if(!(screenPos[1] > (screenHeight-popupHeight)) && (screenPos[1] < popupHeight)) {
@@ -181,7 +184,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
                 WindowManager.LayoutParams p = (WindowManager.LayoutParams) parent.getLayoutParams();
                 p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                p.dimAmount = 0.4f;
+                p.dimAmount = 0.6f;
                 wm.updateViewLayout(parent, p);
 
 
