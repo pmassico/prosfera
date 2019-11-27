@@ -23,9 +23,22 @@ public class BasketItemList {
         itemQtys.add(newQty);
     }
 
+    //Same as above, but inserts at a given position
+    public void addToLists(Item newItem, int newQty, int position) {
+        basketItems.add(position, newItem);
+        itemQtys.add(position, newQty);
+    }
+
     public void removeFromLists(int position) {
         basketItems.remove(position);
-        itemQtys.remove(itemQtys);
+        itemQtys.remove(position);
+    }
+
+    //Same as removeFromLists, but returns the removed Item
+    public Item deleteFromLists(int position) {
+        Item removed_item = basketItems.remove(position);
+        itemQtys.remove(position); //need to fix quantity issues
+        return removed_item;
     }
 
     public void updateQty(int newQty, int position) {

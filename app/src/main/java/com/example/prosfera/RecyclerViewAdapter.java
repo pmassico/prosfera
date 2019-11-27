@@ -1,47 +1,31 @@
 package com.example.prosfera;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 // Recycler view class taken from "RecyclerView" tutorial by CodingWithMitch
@@ -51,16 +35,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
     private ItemList mItemList;
-    private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<Integer> mPrices = new ArrayList<>();
-    private ArrayList<Integer> mProgress = new ArrayList<>();
-    private ArrayList<Integer> mQuantities = new ArrayList<>();
+    private ArrayList<String> mImageNames;
+    private ArrayList<String> mImageUrls;
+    private ArrayList<Integer> mPrices;
+    private ArrayList<Integer> mProgress;
+    private ArrayList<Integer> mQuantities;
     private Context mContext;
     private PopupWindow popup;
     BasketItemList bItems = MainActivity.getBasketItems();
 
-    // TODO: Change objects in constructor, add progressbar and price
     public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImageUrls, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress,
                                ArrayList<Integer> mQuantities) {
         this.mImageNames = mImageNames;
@@ -79,8 +62,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // TODO: Add condition: if loaded via this button or page -> inflate this item
         // If loaded by wishlist, inflate layout_listitem
         // If loaded by activity_basket, inflate layout_basketitem
-
+//        View view = null;
+//
+//        if(mContext instanceof MainActivity ) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+//        }
+//        else if(mContext instanceof GiftBasket) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_basketitem, parent, false);
+//        }
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -111,7 +102,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private void bindFunc(@NonNull ViewHolder holder, final int position){
 
-        //holder.image.setImageResource(mImageUrls.get(position));
         holder.imageName.setText(mImageNames.get(position));
         holder.price.setText(Integer.toString(mPrices.get(position)));
         holder.quantity.setText(Integer.toString(mQuantities.get(position)));
@@ -129,7 +119,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 ViewGroup root = (ViewGroup) v.getRootView();
                 final ScrollView sv = (ScrollView) root.findViewById(R.id.scroll);
                 sv.setSmoothScrollingEnabled(true);
-                FloatingActionButton fab = root.findViewById(R.id.fab);
 
                 // Inflates 'layout_listitem_popup.xml' as a centered popup window
                 final View container = LayoutInflater.from(mContext).inflate(R.layout.layout_listitem_popup, root, false);
@@ -144,13 +133,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 final int[] screenPos = new int[2];
                 v.getLocationOnScreen(screenPos);
 
+                //Show popup overtop clicked view
                 popup.showAsDropDown(v, 0, -v.getHeight() + container.getHeight()-150);
 
                 // This gets the height of the popup (before it has been drawn)
                 container.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
                 final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
                 final int popupHeight = container.getMeasuredHeight();
-                final int fabHeight = fab.getHeight();
 
                 Log.d(TAG, "Screen height is " + screenHeight);
                 Log.d(TAG, "Clicked item is at " + screenPos[0] +" and "+screenPos[1] );
@@ -160,7 +150,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 //if the item it too far down to entirely show the popup, scroll down
                 if(screenPos[1] > (screenHeight-popupHeight) && !(screenPos[1] < popupHeight)) {
-                    vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1])) + fabHeight;
+
+                    //Only main activity has FAB. This class is also used in Giftbasket, so this would cause an error
+                    if(mContext instanceof MainActivity ) {
+                            FloatingActionButton fab = root.findViewById(R.id.fab);
+                            final int fabHeight = fab.getHeight();
+                            vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1])) + fabHeight;
+                        }
+                    else {
+                        vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1]));
+                    }
                 }
                 //if the item it high up to entirely show the popup, scroll up
                 else if(!(screenPos[1] > (screenHeight-popupHeight)) && (screenPos[1] < popupHeight)) {
@@ -282,24 +281,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         //add new item
                         Item newItem = new Item(clickedItem.getItemID(), clickedItem.getCurrentQty(),
                                 clickedItem.getName(), clickedItem.getDescription(),
-                                clickedItem.getPrice(), clickedItem.getThreshold());
+                                clickedItem.getPrice(), clickedItem.getThreshold(), clickedItem.getImageURL());
 
                         bItems.addToLists(newItem, qty_text);
                         } else {
                             //add quantity to existing item
                             int currQty = bItems.getItemQtys().get(position);
                             bItems.updateQty((currQty+qty_text), position);
-                        }
 
+                            //If updating qty from giftbasket page, notify the recycler view
+                            //if(mContext instanceof GiftBasket ) {
+
+                            //}
 
                         popup.dismiss();
                     }
-                });
+                }});
 
                 exit_button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v){
                         Log.d(TAG, "onClick: clicked on exit button");
+                        //RecyclerViewAdapter.this.notifyItemChanged(position, qty.getText().toString().trim());
                         RecyclerViewAdapter.this.notifyItemChanged(position, qty.getText().toString().trim());
                         popup.dismiss();
                     }
