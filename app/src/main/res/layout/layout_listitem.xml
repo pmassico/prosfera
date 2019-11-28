@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -26,7 +26,7 @@
             <RelativeLayout
                 android:id="@+id/card_innerLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="50dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/image"
@@ -65,7 +65,7 @@
                     android:layout_width="40dp"
                     android:layout_height="50dp"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="30dp"
                     android:layout_marginTop="-5dp"
                     android:layout_toEndOf="@id/progressView"
                     android:layout_toRightOf="@+id/progressView"
@@ -80,16 +80,18 @@
 
                 <TextView
                     android:id="@+id/itemPrice"
-                    android:layout_width="40dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
                     android:layout_marginLeft="18dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="-5dp"
                     android:layout_toEndOf="@id/itemQty"
                     android:layout_toRightOf="@+id/itemQty"
+                    android:gravity="center"
                     android:text="10"
                     android:textColor="#363636"
                     android:textColorHint="#00000000"
-                    android:textSize="22sp" />
+                    android:textSize="19sp"/>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

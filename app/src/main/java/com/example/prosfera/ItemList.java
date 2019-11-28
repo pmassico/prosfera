@@ -1,12 +1,9 @@
 package com.example.prosfera;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -17,7 +14,6 @@ public class ItemList {
     // An array of Items
     // Should be common among all itemlist instantiations
     private static final List<Item> ITEMS = new ArrayList<>();
-    Context context;
 
     // Constructor
     public ItemList(Context context) {
@@ -52,10 +48,9 @@ public class ItemList {
                 int price = item.getInt("price");
                 String image = item.getString("imageURL");
                 int threshold = item.getInt("threshold");
+                int charityQty = item.getInt("availableQty");
 
-                Item itm = new Item(i + 1, default_qty, name, desc, price, threshold, image);
-                //For testing:
-                //System.out.println(itm);
+                Item itm = new Item(i + 1, default_qty, name, desc, price, threshold, image, charityQty);
                 ITEMS.add(itm);
             }
         }

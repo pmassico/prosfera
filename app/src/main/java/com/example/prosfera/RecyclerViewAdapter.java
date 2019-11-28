@@ -1,46 +1,35 @@
 package com.example.prosfera;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 // Recycler view class taken from "RecyclerView" tutorial by CodingWithMitch
@@ -50,16 +39,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
     private ItemList mItemList;
-    private ArrayList<String> mImageNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-    private ArrayList<Integer> mPrices = new ArrayList<>();
-    private ArrayList<Integer> mProgress = new ArrayList<>();
-    private ArrayList<Integer> mQuantities = new ArrayList<>();
+    private ArrayList<String> mImageNames;
+    private ArrayList<String> mImageUrls;
+    private ArrayList<Integer> mPrices;
+    private ArrayList<Integer> mProgress;
+    private ArrayList<Integer> mQuantities;
     private Context mContext;
     private PopupWindow popup;
     BasketItemList bItems = MainActivity.getBasketItems();
 
-    // TODO: Change objects in constructor, add progressbar and price
     public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImageUrls, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress,
                                ArrayList<Integer> mQuantities) {
         this.mImageNames = mImageNames;
@@ -78,8 +66,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // TODO: Add condition: if loaded via this button or page -> inflate this item
         // If loaded by wishlist, inflate layout_listitem
         // If loaded by activity_basket, inflate layout_basketitem
-
+//        View view = null;
+//
+//        if(mContext instanceof MainActivity ) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+//        }
+//        else if(mContext instanceof GiftBasket) {
+//            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_basketitem, parent, false);
+//        }
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_listitem, parent, false);
+
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -110,14 +106,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private void bindFunc(@NonNull ViewHolder holder, final int position){
 
-        //holder.image.setImageResource(mImageUrls.get(position));
         holder.imageName.setText(mImageNames.get(position));
         holder.price.setText(Integer.toString(mPrices.get(position)));
         holder.quantity.setText(Integer.toString(mQuantities.get(position)));
         holder.progress.setMax(100);
         holder.progress.setProgress(mProgress.get(position));
 
-        final Item clickedItem = mItemList.getItem(position);
+        Item itm = null;
+        if(mContext instanceof MainActivity ) {
+            itm = mItemList.getItem(position);
+        }
+        else if(mContext instanceof GiftBasket) {
+            itm = bItems.getBasketItems().get(position);
+        }
+
+        final Item clickedItem = itm;
 
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,10 +145,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 final int[] screenPos = new int[2];
                 v.getLocationOnScreen(screenPos);
 
+                //Show popup overtop clicked view
                 popup.showAsDropDown(v, 0, -v.getHeight() + container.getHeight()-150);
 
                 // This gets the height of the popup (before it has been drawn)
                 container.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
                 final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
                 final int popupHeight = container.getMeasuredHeight();
 
@@ -157,7 +162,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 //if the item it too far down to entirely show the popup, scroll down
                 if(screenPos[1] > (screenHeight-popupHeight) && !(screenPos[1] < popupHeight)) {
-                    vertical_scroll[0] = popupHeight - (screenHeight - screenPos[1]);
+
+                    //Only main activity has FAB. This class is also used in Giftbasket, so this would cause an error
+                    if(mContext instanceof MainActivity ) {
+                            FloatingActionButton fab = root.findViewById(R.id.fab);
+                            final int fabHeight = fab.getHeight();
+                            vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1])) + fabHeight;
+                        }
+                    else {
+                        vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1]));
+                    }
                 }
                 //if the item it high up to entirely show the popup, scroll up
                 else if(!(screenPos[1] > (screenHeight-popupHeight)) && (screenPos[1] < popupHeight)) {
@@ -181,7 +195,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
                 WindowManager.LayoutParams p = (WindowManager.LayoutParams) parent.getLayoutParams();
                 p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-                p.dimAmount = 0.4f;
+                p.dimAmount = 0.6f;
                 wm.updateViewLayout(parent, p);
 
 
@@ -196,9 +210,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 // Set data of popup window to match clicked element
                 name.setText(clickedItem.getName());
-                //qty.getText().toString().trim();
-                qty.setText("1");
-                price.setText(Integer.toString(clickedItem.getPrice())); //calculated total?
+                if(mContext instanceof MainActivity ) {
+                    qty.setText(Integer.toString(clickedItem.getCurrentQty()));
+                }
+                else if(mContext instanceof GiftBasket) {
+                    int basket_pos = bItems.findItemInList(clickedItem.getItemID());
+                    qty.setText(Integer.toString(bItems.getItemQtys().get(basket_pos)));
+                }
+
+                price.setText(Integer.toString(clickedItem.getTotalPrice()));
                 progress.setProgress(clickedItem.getCalculatedPerc());
                 Glide.with(mContext)
                         .asBitmap()
@@ -232,7 +252,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         int qty_text = Integer.parseInt(qty.getText().toString().trim());
                         qty_text++;
                         qty.setText(Integer.toString(qty_text));
-                        price.setText(Integer.toString((qty_text*unitPrice)));
+                        clickedItem.setCurrentQTY(qty_text);
+                        price.setText(Integer.toString(clickedItem.getTotalPrice()));
                     }
                 });
 
@@ -245,7 +266,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             qty_text--;
                         }
                         qty.setText(Integer.toString(qty_text));
-                        price.setText(Integer.toString((qty_text*unitPrice)));
+                        clickedItem.setCurrentQTY(qty_text);
+                        price.setText(Integer.toString(clickedItem.getTotalPrice()));
                     }
                 });
 
@@ -254,41 +276,50 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     public void onClick(View v){
                         Log.d(TAG, "onClick: clicked on okay button");
 
-                        Item foundItem;
-                        Boolean found = false;
-                        int position = 0;
+                        boolean found = false;
 
                         int qty_text = Integer.parseInt(qty.getText().toString().trim());
                         int clickedItemID = clickedItem.getItemID();
+                        int bList_pos = bItems.findItemInList(clickedItemID);
 
                         //ADD TO CART
                         //check if item exists in basket
-                        if (!bItems.getBasketItems().isEmpty()) {
-                            for (int i = 0; i < bItems.getBasketItems().size(); i++) {
-                                int currID = bItems.getBasketItems().get(i).getItemID();
-                                if (currID == clickedItemID) {
-                                    foundItem = bItems.getBasketItems().get(i);
-                                    found = true;
-                                    position = i;
-                                }
-                            }
+                        if(bList_pos > -1) {
+                            found = true;
                         }
-
 
                         if(!found) {
                         //add new item
                         Item newItem = new Item(clickedItem.getItemID(), clickedItem.getCurrentQty(),
                                 clickedItem.getName(), clickedItem.getDescription(),
-                                clickedItem.getPrice(), clickedItem.getThreshold());
+                                clickedItem.getPrice(), clickedItem.getThreshold(), clickedItem.getImageURL(), clickedItem.getCharityQty());
 
                         bItems.addToLists(newItem, qty_text);
                         } else {
                             //add quantity to existing item
-                            int currQty = bItems.getItemQtys().get(position);
-                            bItems.updateQty((currQty+qty_text), position);
+                            int currQty = bItems.getItemQtys().get(bList_pos);
+                            if(mContext instanceof MainActivity) {
+                                bItems.updateQty((currQty + qty_text), bList_pos);
+                            }
+                            else if(mContext instanceof GiftBasket) {
+                                bItems.updateQty(qty_text, bList_pos);
+                            }
                         }
-
-
+                        //Notify the recycler view
+                        if(mContext instanceof GiftBasket ) {
+                            clickedItem.setCurrentQTY(Integer.parseInt(qty.getText().toString().trim()));
+                            clickedItem.updateTotalPrice();
+                            mQuantities.set(bList_pos, clickedItem.getCurrentQty());
+                            mPrices.set(bList_pos, clickedItem.getTotalPrice());
+                            RecyclerViewAdapter.this.notifyItemChanged(bList_pos);
+                        }
+                        else if(mContext instanceof MainActivity) {
+                            clickedItem.setCurrentQTY(1);
+                            clickedItem.updateTotalPrice();
+                            mQuantities.set(position, clickedItem.getCurrentQty());
+                            mPrices.set(position, clickedItem.getTotalPrice());
+                            RecyclerViewAdapter.this.notifyItemChanged(position);
+                        }
                         popup.dismiss();
                     }
                 });
@@ -297,10 +328,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     @Override
                     public void onClick(View v){
                         Log.d(TAG, "onClick: clicked on exit button");
-                        RecyclerViewAdapter.this.notifyItemChanged(position, qty.getText().toString().trim());
+                        if(mContext instanceof MainActivity ) {
+                            clickedItem.setCurrentQTY(Integer.parseInt(qty.getText().toString().trim()));
+                            clickedItem.updateTotalPrice();
+                            mQuantities.set(position, clickedItem.getCurrentQty());
+                            mPrices.set(position, clickedItem.getTotalPrice());
+
+                            RecyclerViewAdapter.this.notifyItemChanged(position);
+                        }
                         popup.dismiss();
                     }
                 });
+
 
             }
         });

@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             Item item = il.getItem(i);
             mImageUrls.add(item.getImageURL());
             mNames.add(item.getName());
-            mPrices.add(item.getPrice());
+            mPrices.add(item.getTotalPrice());
             mProgress.add(item.getCalculatedPerc());
             mQuantities.add(1);
         }
