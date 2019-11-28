@@ -91,7 +91,7 @@ public class GiftBasket extends AppCompatActivity {
         for ( int i=0 ; i < bItems.getBasketItems().size() ; i++ ) {
             mImageUrls.add(bItems.getBasketItems().get(i).getImageURL());
             mNames.add(bItems.getBasketItems().get(i).getName());
-            mPrices.add(bItems.getBasketItems().get(i).getPrice());
+            mPrices.add(bItems.getBasketItems().get(i).getTotalPrice());
             mProgress.add(bItems.getBasketItems().get(i).getCurrentQty());
             mQuantities.add(bItems.getItemQtys().get(i));
         }

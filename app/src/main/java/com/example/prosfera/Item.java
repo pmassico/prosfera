@@ -3,14 +3,18 @@ import java.io.Serializable; //This is needed in order to pass objects using int
 
 public class Item implements Serializable{
 
-    private int itemID, currentQty, price, threshold, calculatedPerc;
+    private int itemID, threshold, calculatedPerc;
+    //price is the unit price per unit, while total_price tracks price*qty
+    private int price, totalPrice;
+    //currentQty refers to session quantities, while charityQty refers to the total amount raised by the charity
+    private int  currentQty, charityQty;
     private String name, description;
     private String imageURL;
     //visible (flag)
     //featured/promoted (flag)
 
     public Item(int itID, int currQty, String nm, String desc, int prce,
-                int thresh, String image) {
+                int thresh, String image, int charityQ) {
         this.itemID      = itID;
         this.currentQty  = currQty;
         this.name        = nm;
@@ -18,13 +22,12 @@ public class Item implements Serializable{
         this.price       = prce;
         this.threshold   = thresh;
         this.imageURL   = image;
+        this.charityQty = charityQ;
         updatePercentage();
+        updateTotalPrice();
     }
 
-    public int getItemID()
-    {
-        return itemID;
-    }
+    public int getItemID() { return itemID; }
 
     public int getCurrentQty()
     {
@@ -50,11 +53,18 @@ public class Item implements Serializable{
         return imageURL;
     }
 
-    public int getCalculatedPerc()
-    {
+    public int getCalculatedPerc() {
         updatePercentage();
         return calculatedPerc;
     }
+
+    public int getCharityQty() { return charityQty; }
+
+    public int getTotalPrice() {
+        updateTotalPrice();
+        return totalPrice;
+    }
+
 
 
     public void setItemID(int iID)
@@ -92,6 +102,10 @@ public class Item implements Serializable{
         imageURL = res_name;
     }
 
-    public void updatePercentage() { this.calculatedPerc = this.currentQty/this.threshold; }
+    public void setCharityQty(int charityQ) { charityQty = charityQ;}
+
+    public void updateTotalPrice() {this.totalPrice = this.currentQty * this.price;}
+
+    public void updatePercentage() { this.calculatedPerc = this.charityQty/this.threshold; }
 
 }

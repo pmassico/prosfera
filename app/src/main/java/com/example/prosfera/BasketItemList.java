@@ -45,6 +45,21 @@ public class BasketItemList {
         itemQtys.set(position, newQty);
     }
 
+    //finds if an itemID is in the list. Returns -1 if not, and the position of the item if found
+    public int findItemInList(int itemID) {
+        int position = -1;
+
+        if (!basketItems.isEmpty()) {
+            for (int i = 0; i < basketItems.size(); i++) {
+                int currID = basketItems.get(i).getItemID();
+                if (currID == itemID) {
+                    position = i;
+                }
+            }
+        }
+        return position;
+    }
+
     @Override
     public String toString() {
         String basketItemContents = "";

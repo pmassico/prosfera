@@ -48,8 +48,9 @@ public class ItemList {
                 int price = item.getInt("price");
                 String image = item.getString("imageURL");
                 int threshold = item.getInt("threshold");
+                int charityQty = item.getInt("availableQty");
 
-                Item itm = new Item(i + 1, default_qty, name, desc, price, threshold, image);
+                Item itm = new Item(i + 1, default_qty, name, desc, price, threshold, image, charityQty);
                 ITEMS.add(itm);
             }
         }
