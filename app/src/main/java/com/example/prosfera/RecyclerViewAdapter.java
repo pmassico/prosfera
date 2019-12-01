@@ -112,6 +112,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.imageName.setText(mImageNames.get(position));
         holder.price.setText(Integer.toString(mPrices.get(position)));
+
+        //TODO: Deal with manual quantity edits in the EditText box. Disabling changes for now
+        //TODO: You must also change a few line in the listitem XML: android:inputType="none"
+        holder.price.setEnabled(false);
+
+
         holder.quantity.setText(Integer.toString(mQuantities.get(position)));
         holder.progress.setMax(100);
         holder.progress.setProgress(mProgress.get(position));
