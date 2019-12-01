@@ -1,5 +1,5 @@
 package com.example.prosfera;
-import java.io.Serializable; //This is needed in order to pass objects using intents (i.e. in ItemDetails activity)
+import java.io.Serializable;
 
 public class Item implements Serializable{
 
@@ -8,8 +8,12 @@ public class Item implements Serializable{
     private int price, totalPrice;
     //currentQty refers to session quantities, while charityQty refers to the total amount raised by the charity
     private int  currentQty, charityQty;
-    private String name, description;
-    private String imageURL;
+    private String name, description, imageURL;
+
+    //tempPercent is used to track temporary progress changes (items in basket that have NOT been
+    //checked out. Once user checks out their cart, calculatedPercent = tempPercent
+    private int tempPercent;
+
     //visible (flag)
     //featured/promoted (flag)
 
@@ -25,6 +29,7 @@ public class Item implements Serializable{
         this.charityQty = charityQ;
         updatePercentage();
         updateTotalPrice();
+        tempPercent = this.calculatedPerc;
     }
 
     public int getItemID() { return itemID; }
@@ -65,6 +70,10 @@ public class Item implements Serializable{
         return totalPrice;
     }
 
+    public int getTempPercent()
+    {
+        return tempPercent;
+    }
 
 
     public void setItemID(int iID)
@@ -106,6 +115,14 @@ public class Item implements Serializable{
 
     public void updateTotalPrice() {this.totalPrice = this.currentQty * this.price;}
 
-    public void updatePercentage() { this.calculatedPerc = this.charityQty/this.threshold; }
+    public void updatePercentage() { this.calculatedPerc = (this.charityQty*100)/this.threshold; }
 
+
+    public void addToTemporaryProgress(int qty) {
+        this.tempPercent += ((qty*100)/this.threshold);
+    }
+
+    public void resetTemporaryProgress() {
+        this.tempPercent = this.calculatedPerc;
+    }
 }

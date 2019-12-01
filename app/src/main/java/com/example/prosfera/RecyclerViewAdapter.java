@@ -48,6 +48,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private PopupWindow popup;
     BasketItemList bItems = MainActivity.getBasketItems();
 
+    //This is used in the close function, in which this value is needed to reset the
+    //progress bar and qty
+    private int changed_by = 0;
+
     public RecyclerViewAdapter(Context mContext, ArrayList<String> mImageNames, ArrayList<String> mImageUrls, ArrayList<Integer> mPrices, ArrayList<Integer> mProgress,
                                ArrayList<Integer> mQuantities) {
         this.mImageNames = mImageNames;
@@ -203,7 +207,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 TextView name = container.findViewById(R.id.image_name);
                 final EditText qty = container.findViewById(R.id.itemQty);
                 final TextView price = container.findViewById(R.id.itemPrice);
-                ProgressBar progress = container.findViewById(R.id.progressView);
+                final ProgressBar progress = container.findViewById(R.id.progressView);
                 CircleImageView img = container.findViewById(R.id.image);
 
                 final int unitPrice = clickedItem.getPrice();
@@ -219,7 +223,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
 
                 price.setText(Integer.toString(clickedItem.getTotalPrice()));
-                progress.setProgress(clickedItem.getCalculatedPerc());
+                progress.setProgress(clickedItem.getTempPercent());
                 Glide.with(mContext)
                         .asBitmap()
                         .load(mImageUrls.get(position))
@@ -251,9 +255,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         Log.d(TAG, "onClick: clicked on increment button");
                         int qty_text = Integer.parseInt(qty.getText().toString().trim());
                         qty_text++;
+                        changed_by++;
                         qty.setText(Integer.toString(qty_text));
                         clickedItem.setCurrentQTY(qty_text);
+                        clickedItem.addToTemporaryProgress(1);
                         price.setText(Integer.toString(clickedItem.getTotalPrice()));
+                        progress.setProgress(clickedItem.getTempPercent());
                     }
                 });
 
@@ -264,6 +271,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         int qty_text = Integer.parseInt(qty.getText().toString().trim());
                         if(qty_text > 1){
                             qty_text--;
+                            changed_by--;
+                            clickedItem.addToTemporaryProgress(-1);
+                            progress.setProgress(clickedItem.getTempPercent());
                         }
                         qty.setText(Integer.toString(qty_text));
                         clickedItem.setCurrentQTY(qty_text);
@@ -294,23 +304,37 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 clickedItem.getName(), clickedItem.getDescription(),
                                 clickedItem.getPrice(), clickedItem.getThreshold(), clickedItem.getImageURL(), clickedItem.getCharityQty());
 
+                        newItem.addToTemporaryProgress(qty_text);
                         bItems.addToLists(newItem, qty_text);
                         } else {
                             //add quantity to existing item
                             int currQty = bItems.getItemQtys().get(bList_pos);
+                            Item basketItem = bItems.getBasketItems().get(bList_pos);
+
                             if(mContext instanceof MainActivity) {
                                 bItems.updateQty((currQty + qty_text), bList_pos);
+                                basketItem.addToTemporaryProgress(qty_text-currQty);
                             }
                             else if(mContext instanceof GiftBasket) {
                                 bItems.updateQty(qty_text, bList_pos);
+                                basketItem.resetTemporaryProgress();
+                                basketItem.addToTemporaryProgress(qty_text);
+
+                                int wishlist_pos = mItemList.findItemInList(clickedItemID);
+                                Item wishlistItem = mItemList.getWishlistItems().get(wishlist_pos);
+                                wishlistItem.resetTemporaryProgress();
+                                wishlistItem.addToTemporaryProgress(qty_text);
                             }
+
                         }
                         //Notify the recycler view
                         if(mContext instanceof GiftBasket ) {
-                            clickedItem.setCurrentQTY(Integer.parseInt(qty.getText().toString().trim()));
+                            clickedItem.setCurrentQTY(qty_text);
                             clickedItem.updateTotalPrice();
+
                             mQuantities.set(bList_pos, clickedItem.getCurrentQty());
                             mPrices.set(bList_pos, clickedItem.getTotalPrice());
+                            mProgress.set(bList_pos, clickedItem.getTempPercent());
                             RecyclerViewAdapter.this.notifyItemChanged(bList_pos);
                         }
                         else if(mContext instanceof MainActivity) {
@@ -318,6 +342,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             clickedItem.updateTotalPrice();
                             mQuantities.set(position, clickedItem.getCurrentQty());
                             mPrices.set(position, clickedItem.getTotalPrice());
+                            mProgress.set(position, clickedItem.getTempPercent());
                             RecyclerViewAdapter.this.notifyItemChanged(position);
                         }
                         popup.dismiss();
@@ -333,9 +358,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             clickedItem.updateTotalPrice();
                             mQuantities.set(position, clickedItem.getCurrentQty());
                             mPrices.set(position, clickedItem.getTotalPrice());
+                            mProgress.set(position, progress.getProgress());
 
                             RecyclerViewAdapter.this.notifyItemChanged(position);
                         }
+                        //The close button does NOT save changes on the giftbasket page
+                        //This reverts any changes made on the popup, and ensures that the data is not
+                        //sent back to the main list
+                        if(mContext instanceof GiftBasket ) {
+                            clickedItem.setCurrentQTY(Integer.parseInt(qty.getText().toString().trim())-changed_by);
+                            clickedItem.updateTotalPrice();
+                            clickedItem.addToTemporaryProgress(-changed_by);
+
+                            mQuantities.set(position, clickedItem.getCurrentQty()-changed_by);
+                            mPrices.set(position, clickedItem.getTotalPrice());
+                            mProgress.set(position, clickedItem.getTempPercent());
+                        }
+                        changed_by = 0;
                         popup.dismiss();
                     }
                 });

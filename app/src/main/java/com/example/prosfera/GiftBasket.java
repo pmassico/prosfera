@@ -92,7 +92,7 @@ public class GiftBasket extends AppCompatActivity {
             mImageUrls.add(bItems.getBasketItems().get(i).getImageURL());
             mNames.add(bItems.getBasketItems().get(i).getName());
             mPrices.add(bItems.getBasketItems().get(i).getTotalPrice());
-            mProgress.add(bItems.getBasketItems().get(i).getCurrentQty());
+            mProgress.add(bItems.getBasketItems().get(i).getTempPercent());
             mQuantities.add(bItems.getItemQtys().get(i));
         }
 
@@ -137,6 +137,8 @@ public class GiftBasket extends AppCompatActivity {
                     final int delProgress = mProgress.remove(position);
                     final int delQty = mQuantities.remove(position);
                     final Item delItem = bItems.deleteFromLists(position);
+
+
 
                     adapter1.notifyItemRemoved(position);
                     Snackbar.make(rv1, "Removed from Basket", Snackbar.LENGTH_LONG)

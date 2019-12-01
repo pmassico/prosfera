@@ -1,45 +1,28 @@
 package com.example.prosfera;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import java.util.ArrayList;
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
-
-import android.text.Layout;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    //vars
-    private ItemList il; //Can't get context prior to onCreate. Initialized below
+    private ItemList il;
     private Item featuredItem;
 
     private static BasketItemList basketItems = new BasketItemList();
@@ -67,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started.");
 
         initFeaturedItem(il.getItem(0));
-        initImageBitmaps();
+        initRecyclerView();
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -127,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
                 .into(featuredImage);
 
         // give featured parent an onclick
-
-
         // Should we dispose of the text/image views after we're done using them? Probably?
     }
 
@@ -155,35 +136,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView(){
-        Log.d(TAG, "initRecyclerView: ");
+        Log.d(TAG, "initRecyclerView: preparing wishlist data");
 
-        RecyclerView rv = findViewById(R.id.recyclerView);
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(rv);
-        // TODO: Conditionally load data structures (wishlistNames or basketNames)
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
-        rv.setAdapter(adapter);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setHasFixedSize(true);
-    }
-
-    // Set which images/data to load
-    private void initImageBitmaps(){
-        Log.d(TAG, "initImageBitmaps: preparing wishlist bitmaps.");
-
-        //TODO: Get images to show
         for(int i=0; i < il.getSize(); i++) {
             Item item = il.getItem(i);
             mImageUrls.add(item.getImageURL());
             mNames.add(item.getName());
             mPrices.add(item.getTotalPrice());
-            mProgress.add(item.getCalculatedPerc());
+            mProgress.add(item.getTempPercent());
             mQuantities.add(1);
         }
 
-        initRecyclerView();
+        RecyclerView rv = findViewById(R.id.recyclerView);
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(rv);
 
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setHasFixedSize(true);
     }
 
     public static BasketItemList getBasketItems() {
