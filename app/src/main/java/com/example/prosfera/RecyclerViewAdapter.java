@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +23,10 @@ import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
@@ -319,8 +324,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                             if(mContext instanceof MainActivity) {
                                 bItems.updateQty((currQty + qty_text), bList_pos);
-                                basketItem.addToTemporaryProgress(qty_text-currQty);
+                                basketItem.addToTemporaryProgress(qty_text);
                             }
+
                             else if(mContext instanceof GiftBasket) {
                                 bItems.updateQty(qty_text, bList_pos);
                                 basketItem.resetTemporaryProgress();
@@ -350,6 +356,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             mPrices.set(position, clickedItem.getTotalPrice());
                             mProgress.set(position, clickedItem.getTempPercent());
                             RecyclerViewAdapter.this.notifyItemChanged(position);
+
+                            //Make 'added to gift basket' popup
+                            Toast toast = Toast.makeText(mContext, "Added to Gift Basket.", Toast.LENGTH_LONG);
+                            View view =toast.getView();
+                            view.getBackground().setColorFilter(mContext.getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
+                            TextView toastMessage=(TextView) toast.getView().findViewById(android.R.id.message);
+                            toastMessage.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                            toast.show();
                         }
                         popup.dismiss();
                     }
@@ -389,7 +403,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
     }
-
 
     // size of item list = number of items loaded into recyclerView
     @Override

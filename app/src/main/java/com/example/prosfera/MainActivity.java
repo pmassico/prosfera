@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private ItemList il;
+    private static ItemList il;
     private Item featuredItem;
 
     private static BasketItemList basketItems = new BasketItemList();
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Integer> mPrices = new ArrayList<>();
     private ArrayList<Integer> mProgress = new ArrayList<>();
     private ArrayList<Integer> mQuantities  = new ArrayList<>();
+
+    RecyclerViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        ArrayList<Integer> positions = checkForProgressUpdates();
+        if(!positions.isEmpty()) {
+            for (int i = 0; i < positions.size(); i++) {
+                adapter.notifyItemChanged(positions.get(i));
+            }
+        }
     }
 
     public void onFeaturedClick(View view){
@@ -138,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: preparing wishlist data");
 
-
         for(int i=0; i < il.getSize(); i++) {
             Item item = il.getItem(i);
             mImageUrls.add(item.getImageURL());
@@ -152,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(rv);
 
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
+        adapter = new RecyclerViewAdapter(MainActivity.this, mNames, mImageUrls, mPrices, mProgress, mQuantities);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setHasFixedSize(true);
@@ -160,6 +172,31 @@ public class MainActivity extends AppCompatActivity {
 
     public static BasketItemList getBasketItems() {
         return basketItems;
+    }
+
+    public static ItemList getWishlistItems() {
+        return il;
+    }
+
+    // This checks to see if the adapter data is out of date from the data in the list, and then
+    // updates accordingly
+    // (Changes to progress made in the giftbasket don't automatically update the progress bars
+    // on wishlist. Only the ITEMS list is changed, and not the recyclerView data)
+    //
+    // Updates the data in mProgress, and returns the positions changed (or empty array if none)
+    public ArrayList<Integer> checkForProgressUpdates() {
+        ArrayList<Integer> positions = new ArrayList<Integer>();
+
+        for(int i=0; i < il.getSize(); i++) {
+            int curr_prog = il.getItem(i).getTempPercent();
+            int old_prog = mProgress.get(i);
+
+            if(curr_prog != old_prog){
+                mProgress.set(i, curr_prog);
+                positions.add(i);
+            }
+        }
+        return positions;
     }
 
 }

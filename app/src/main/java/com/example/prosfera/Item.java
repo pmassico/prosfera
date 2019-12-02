@@ -12,7 +12,7 @@ public class Item implements Serializable{
 
     //tempPercent is used to track temporary progress changes (items in basket that have NOT been
     //checked out. Once user checks out their cart, calculatedPercent = tempPercent
-    private int tempPercent;
+    private int tempProgress;
 
     //visible (flag)
     //featured/promoted (flag)
@@ -29,7 +29,10 @@ public class Item implements Serializable{
         this.charityQty = charityQ;
         updatePercentage();
         updateTotalPrice();
-        tempPercent = this.calculatedPerc;
+
+        //like calculated percent, but includes the default qty of 1 in recyclerViews
+        //(already included in progressbar)
+        tempProgress = ((this.charityQty+1)*100)/this.threshold;
     }
 
     public int getItemID() { return itemID; }
@@ -72,7 +75,7 @@ public class Item implements Serializable{
 
     public int getTempPercent()
     {
-        return tempPercent;
+        return tempProgress;
     }
 
 
@@ -117,12 +120,17 @@ public class Item implements Serializable{
 
     public void updatePercentage() { this.calculatedPerc = (this.charityQty*100)/this.threshold; }
 
+    public void setTempProgress(int prog)
+    {
+        this.tempProgress = prog;
+    }
+
 
     public void addToTemporaryProgress(int qty) {
-        this.tempPercent += ((qty*100)/this.threshold);
+        this.tempProgress += ((qty*100)/this.threshold);
     }
 
     public void resetTemporaryProgress() {
-        this.tempPercent = this.calculatedPerc;
+        this.tempProgress = this.calculatedPerc;
     }
 }
