@@ -46,7 +46,6 @@ public class GiftBasket extends AppCompatActivity {
         setContentView(R.layout.activity_basket);
 
         //Bundle itemData = getIntent().getExtras();
-        ItemList il = new ItemList(this);
 
         if(!bItems.getBasketItems().isEmpty()) {
             // Populates basket
@@ -92,7 +91,7 @@ public class GiftBasket extends AppCompatActivity {
             mImageUrls.add(bItems.getBasketItems().get(i).getImageURL());
             mNames.add(bItems.getBasketItems().get(i).getName());
             mPrices.add(bItems.getBasketItems().get(i).getTotalPrice());
-            mProgress.add(bItems.getBasketItems().get(i).getCurrentQty());
+            mProgress.add(bItems.getBasketItems().get(i).getTempPercent());
             mQuantities.add(bItems.getItemQtys().get(i));
         }
 
@@ -138,8 +137,14 @@ public class GiftBasket extends AppCompatActivity {
                     final int delQty = mQuantities.remove(position);
                     final Item delItem = bItems.deleteFromLists(position);
 
+                    //reset the progress bar in wishlist if an item has been deleted from basket
+                    ItemList il = MainActivity.getWishlistItems();
+                    final Item del_item_wishlist = il.getItem(il.findItemInList(delItem.getItemID()));
+                    final int del_progress = del_item_wishlist.getTempPercent();
+                    del_item_wishlist.resetTemporaryProgress();
+
                     adapter1.notifyItemRemoved(position);
-                    Snackbar.make(rv1, "Removed from Basket", Snackbar.LENGTH_LONG)
+                    Snackbar.make(rv1, "Removed from Gift Basket", Snackbar.LENGTH_LONG)
                         .setAction("Undo", new View.OnClickListener(){
 
                             //If undo is clicked, add the elements back into their arrays
@@ -151,7 +156,8 @@ public class GiftBasket extends AppCompatActivity {
                                 mProgress.add(position, delProgress);
                                 mQuantities.add(position, delQty);
                                 adapter1.notifyItemInserted(position);
-                                bItems.addToLists(delItem, delQty, position );
+                                bItems.addToLists(delItem, delQty, position);
+                                del_item_wishlist.setTempProgress(del_progress);
                             }
                         }).show();
             }

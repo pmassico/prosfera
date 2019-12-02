@@ -7,13 +7,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemList {
 
     // An array of Items
     // Should be common among all itemlist instantiations
-    private static final List<Item> ITEMS = new ArrayList<>();
+    private static final ArrayList<Item> ITEMS = new ArrayList<>();
 
     // Constructor
     public ItemList(Context context) {
@@ -29,6 +28,23 @@ public class ItemList {
     public Item getItem(int pos) { return ITEMS.get(pos); }
 
     public int getSize(){ return ITEMS.size(); }
+
+    public ArrayList<Item> getWishlistItems() { return ITEMS; }
+
+    //finds if an itemID is in the list. Returns -1 if not, and the position of the item if found
+    public int findItemInList(int itemID) {
+        int position = -1;
+
+        if (!ITEMS.isEmpty()) {
+            for (int i = 0; i < ITEMS.size(); i++) {
+                int currID = ITEMS.get(i).getItemID();
+                if (currID == itemID) {
+                    position = i;
+                }
+            }
+        }
+        return position;
+    }
 
   
     // This method is used to read in the items.json file and create a list of Item objects.
