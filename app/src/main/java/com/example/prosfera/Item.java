@@ -30,9 +30,7 @@ public class Item implements Serializable{
         updatePercentage();
         updateTotalPrice();
 
-        //like calculated percent, but includes the default qty of 1 in recyclerViews
-        //(already included in progressbar)
-        tempProgress = ((this.charityQty+1)*100)/this.threshold;
+        tempProgress = this.calculatedPerc;
     }
 
     public int getItemID() { return itemID; }

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.PopupWindow;
@@ -160,14 +161,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 final int[] screenPos = new int[2];
                 v.getLocationOnScreen(screenPos);
 
-                //Show popup overtop clicked view
-                popup.showAsDropDown(v, 0, -v.getHeight() + container.getHeight()-150);
-
                 // This gets the height of the popup (before it has been drawn)
                 container.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
 
                 final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
                 final int popupHeight = container.getMeasuredHeight();
+                LinearLayout bottom_buttons = container.findViewById(R.id.buttons_item_bottom);
+                final int buttons_height = bottom_buttons.getMeasuredHeight();
+
+                //Show popup overtop clicked view
+                popup.showAsDropDown(v, 0, -popupHeight+buttons_height);
 
                 Log.d(TAG, "Screen height is " + screenHeight);
                 Log.d(TAG, "Clicked item is at " + screenPos[0] +" and "+screenPos[1] );
@@ -182,7 +185,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     if(mContext instanceof MainActivity ) {
                             FloatingActionButton fab = root.findViewById(R.id.fab);
                             final int fabHeight = fab.getHeight();
-                            vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1])) + fabHeight;
+
+                        //Sets the bottom padding programmatically to fit the fab and popup buttons
+                        //(plus a few extra pixels to account for bottom margin)
+                        CoordinatorLayout coord = sv.findViewById(R.id.coord);
+                        coord.setPadding(0,0,0, buttons_height+fabHeight+30);
+
+                        vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1])+fabHeight);
                         }
                     else {
                         vertical_scroll[0] = (popupHeight - (screenHeight - screenPos[1]));
@@ -190,7 +199,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
                 //if the item it high up to entirely show the popup, scroll up
                 else if(!(screenPos[1] > (screenHeight-popupHeight)) && (screenPos[1] < popupHeight)) {
-                    vertical_scroll[0] = screenPos[1]-popupHeight + v.getHeight();
+                    vertical_scroll[0] = screenPos[1]-popupHeight + buttons_height;
                 }
 
                 final Handler handler = new Handler();
@@ -266,7 +275,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         Log.d(TAG, "onClick: clicked on increment button");
                         int qty_text = Integer.parseInt(qty.getText().toString().trim());
                         qty_text++;
-                        changed_by++;
+                        if(mContext instanceof GiftBasket ) {
+                            changed_by++;
+                        }
                         qty.setText(Integer.toString(qty_text));
                         clickedItem.setCurrentQTY(qty_text);
                         clickedItem.addToTemporaryProgress(1);
@@ -282,9 +293,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         int qty_text = Integer.parseInt(qty.getText().toString().trim());
                         if(qty_text > 1){
                             qty_text--;
-                            changed_by--;
                             clickedItem.addToTemporaryProgress(-1);
                             progress.setProgress(clickedItem.getTempPercent());
+                            if(mContext instanceof GiftBasket ) {
+                                changed_by--;
+                            }
                         }
                         qty.setText(Integer.toString(qty_text));
                         clickedItem.setCurrentQTY(qty_text);
@@ -358,10 +371,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             RecyclerViewAdapter.this.notifyItemChanged(position);
 
                             //Make 'added to gift basket' popup
-                            Toast toast = Toast.makeText(mContext, "Added to Gift Basket.", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(mContext, "Added to Gift Basket.", Toast.LENGTH_SHORT);
                             View view =toast.getView();
                             view.getBackground().setColorFilter(mContext.getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_IN);
-                            TextView toastMessage=(TextView) toast.getView().findViewById(android.R.id.message);
+                            TextView toastMessage= toast.getView().findViewById(android.R.id.message);
                             toastMessage.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
                             toast.show();
                         }

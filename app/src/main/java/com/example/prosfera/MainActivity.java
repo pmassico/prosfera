@@ -153,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
             mImageUrls.add(item.getImageURL());
             mNames.add(item.getName());
             mPrices.add(item.getTotalPrice());
+            //Add default qty to progressbar
+            item.addToTemporaryProgress(1);
             mProgress.add(item.getTempPercent());
             mQuantities.add(1);
         }
