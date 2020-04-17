@@ -3,6 +3,7 @@
 
 ### Key roles: Design, implementing RecyclerViewAdapter, user research
 
+
 **Main Directory:** app/src/main/java/com/example/prosfera/
 
 **Main Files:**
