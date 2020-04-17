@@ -4,7 +4,7 @@
 ### Key roles: Design, implementing RecyclerViewAdapter, user research
 
 
-**Main Directory:** app/src/main/java/com/example/prosfera/
+**Main Directory:** [app/src/main/java/com/example/prosfera/](https://github.com/pmassico/prosfera/tree/master/app/src/main/java/com/example/prosfera)
 
 **Main Files:**
 * MainActivity.java: "Wishlist" view, generates a "featured item" card and the RecyclerView.
