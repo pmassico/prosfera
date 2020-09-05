@@ -6,6 +6,8 @@
 
 **Main Directory:** [app/src/main/java/com/example/prosfera/](https://github.com/pmassico/prosfera/tree/master/app/src/main/java/com/example/prosfera)
 
+**Pitch Deck (google slides):** [here](https://docs.google.com/presentation/d/1_SePkCw5pI8H8HYdF_Q8Hug9wI2JUIfNzAFZiciwI8c/edit?usp=sharing)
+
 **Main Files:**
 * [MainActivity.java:](https://github.com/pmassico/prosfera/blob/master/app/src/main/java/com/example/prosfera/MainActivity.java) "Wishlist" view, generates a "featured item" card and the RecyclerView.
 * [RecyclerViewAdapter.java:](https://github.com/pmassico/prosfera/blob/master/app/src/main/java/com/example/prosfera/RecyclerViewAdapter.java) core homepage functionality, generates list of donation items and 
